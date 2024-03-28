@@ -1,0 +1,5 @@
+Django>=4.2,<5
+# used for image handling and compression
+pillow==10.2.0
+# used for audio compression
+pydub==0.25.1
