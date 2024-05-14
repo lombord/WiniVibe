@@ -1,0 +1,13 @@
+@layer base {
+  .flex-v-base {
+    @apply flex items-center gap-2;
+  }
+
+  .flex-h-base {
+    @apply flex flex-col gap-2;
+  }
+
+  .centered-flex {
+    @apply flex items-center justify-center;
+  }
+}

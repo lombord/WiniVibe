@@ -2,15 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .common import Tag
-from .abstract import CompressedImage
-from .fields import CompImageField
-
-
-class RoomCoverImage(CompressedImage):
-    COMP_CONFIG = {
-        "path": "users/{obj.host_id}/room/",
-        "sizes": {"large": (500, 500)},
-    }
+from .abstract import CompImageField
 
 
 class Room(models.Model):
@@ -24,11 +16,10 @@ class Room(models.Model):
     )
     queue_tracks = models.ManyToManyField("Track", related_name="rooms")
     cover_image = CompImageField(
-        RoomCoverImage,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_("Room cover image"),
+        {
+            "path": "users/{obj.host_id}/room/",
+            "sizes": {"large": (500, 500)},
+        }
     )
     tags = models.ManyToManyField(Tag, related_name="rooms")
 

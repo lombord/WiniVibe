@@ -1,8 +1,6 @@
 from .user import (
     User,
     UserTrackQueue,
-    UserProfileImage,
-    UserHeaderImage,
     UserProfile,
     UserFollow,
     UserSocialLink,
@@ -16,7 +14,6 @@ from .track import (
     TrackLike,
     TrackReplyLike,
     TrackStream,
-    TrackCoverImage,
 )
-from .playlist import Playlist, PlaylistLike, PlaylistTrack, PlaylistCoverImage
-from .room import Room, RoomMember, RoomMessage, JoinRequest, RoomCoverImage
+from .playlist import Playlist, PlaylistLike, PlaylistTrack
+from .room import Room, RoomMember, RoomMessage, JoinRequest

@@ -1,0 +1,4 @@
+-r "./common.txt"
+
+Markdown==3.6
+django-filter==24.2

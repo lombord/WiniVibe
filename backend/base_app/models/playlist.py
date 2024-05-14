@@ -3,15 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .common import Tag
-from .abstract import CompressedImage
-from .fields import CompImageField
-
-
-class PlaylistCoverImage(CompressedImage):
-    COMP_CONFIG = {
-        "path": "users/{obj.owner_id}/playlist/",
-        "sizes": {"large": (500, 500)},
-    }
+from .abstract import CompImageField
 
 
 class Playlist(models.Model):
@@ -24,11 +16,10 @@ class Playlist(models.Model):
     is_public = models.BooleanField(_("Is public playlist?"), default=False)
     tags = models.ManyToManyField(Tag, related_name="playlists")
     cover_image = CompImageField(
-        PlaylistCoverImage,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_("Playlist cover image"),
+        {
+            "path": "users/{obj.owner_id}/playlist/",
+            "sizes": {"large": (500, 500)},
+        }
     )
     liked_people = models.ManyToManyField(
         "User", through="PlaylistLike", related_name="liked_playlists"

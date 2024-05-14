@@ -9,7 +9,7 @@ class Tag(models.Model):
     tag_type = models.CharField(_("Tag Type"), max_length=50, blank=True, default="tag")
 
     def save(self, *args, **kwargs):
-        if self.slug is None:
+        if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 

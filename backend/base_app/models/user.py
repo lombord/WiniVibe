@@ -6,8 +6,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 
-from .abstract import CompressedImage
-from .fields import CompImageField
+from .abstract import CompImageField
+from .fields import AutoOneToOneField
 
 
 class User(AbstractUser):
@@ -45,43 +45,24 @@ class UserTrackQueue(models.Model):
     track = models.ForeignKey("Track", on_delete=models.CASCADE)
 
 
-class UserProfileImage(CompressedImage):
-    COMP_CONFIG = {
-        "path": "users/{obj.user_id}/photo/",
-        "sizes": {"large": (500, 500)},
-    }
-
-
-class UserHeaderImage(CompressedImage):
-    COMP_CONFIG = {
-        "path": "users/{obj.user_id}/header/",
-        "sizes": {"large": (1500, 350), "medium": 0, "small": 0},
-    }
-
-
 class UserProfile(models.Model):
 
     photo = CompImageField(
-        UserProfileImage,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_("Compressed photos"),
+        {"path": "users/{obj.user_id}/photo/", "sizes": {"large": (500, 500)}}
     )
 
     header_image = CompImageField(
-        UserHeaderImage,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_("Profile header image"),
+        {
+            "path": "users/{obj.user_id}/header/",
+            "sizes": {"large": (1500, 350), "small": 0},
+        }
     )
 
     city = models.CharField(_("City"), max_length=100, null=True, blank=True)
     country = models.CharField(_("Country"), max_length=100, null=True, blank=True)
     bio = models.TextField(_("BIO"), max_length=600, null=True, blank=True)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = AutoOneToOneField(User, on_delete=models.CASCADE, related_name="profile")
 
 
 class UserSocialLink(models.Model):

@@ -1,0 +1,3 @@
+.fieldLabel {
+  @apply label pl-1 text-foreground-800;
+}

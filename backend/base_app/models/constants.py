@@ -1,7 +1,7 @@
 # Constant values
 
 
-VALID_AUDIO_EXTS = {"mp3", "mp2" "ogg", "wav", "flac", "aiff", "alac"}
+VALID_AUDIO_EXTS = {"mp3", "mp2", "ogg", "wav", "flac", "aiff", "alac", "opus"}
 
 VALID_AUDIO_MIMES = {
     "audio/mpeg",

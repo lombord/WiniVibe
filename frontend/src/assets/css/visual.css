@@ -1,0 +1,21 @@
+@layer base {
+  .bg-with-before {
+    --bg-color: theme(colors.transparent);
+    @apply relative;
+  }
+
+  .bg-with-before::before {
+    @apply content-[''] absolute inset-0 bg-[var(--bg-color)] 
+    -z-10 pointer-events-none;
+  }
+
+  .bg-before-blur {
+    --blur-value: theme("backdropBlur.xl");
+    @apply bg-with-before overflow-hidden;
+  }
+
+  .bg-before-blur::before {
+    @apply backdrop-blur-[var(--blur-value)];
+    /* transform: translateZ(0) skew(0.5deg); */
+  }
+}

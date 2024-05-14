@@ -1,8 +1,7 @@
+import os
+from io import BytesIO
 from shutil import rmtree
 
-from io import BytesIO
-import os
-from uuid import uuid4
 from pathlib import Path
 from PIL import Image, ImageOps
 
@@ -14,7 +13,11 @@ from django.utils.functional import cached_property
 from django.core.files import File
 from django.core.exceptions import ValidationError
 from django.template.defaultfilters import filesizeformat
-from django.dispatch import receiver
+
+from .utils import create_model
+from .fields import ImageOneToOneField
+
+image_sub_models = {}
 
 
 class CommentBase(models.Model):
@@ -36,8 +39,12 @@ class CompImagePath:
 
     def __call__(self, instance: "CompressedImage", name: str) -> str:
         ext = os.path.splitext(name)[-1]
-        name = f"{uuid4().hex}_{self.size}"
+        name = self.size
         return Path(instance._save_directory, f"{name}{ext}")
+
+
+def cleanup_images(sender, instance: "CompressedImage", **kwargs):
+    instance.clear_files()
 
 
 class CompressedImage(models.Model):
@@ -73,6 +80,10 @@ class CompressedImage(models.Model):
 
     class Meta:
         abstract = True
+
+    def __init_subclass__(cls, *args, **kwargs) -> None:
+        super().__init_subclass__(*args, **kwargs)
+        models.signals.post_delete.connect(cleanup_images, cls)
 
     @cached_property
     def _save_directory(self):
@@ -123,10 +134,35 @@ class CompressedImage(models.Model):
     def clear_files(self):
         try:
             rmtree(Path(self.__old_file.path).parent.resolve(), ignore_errors=True)
+            self.medium = self.small = None
         except Exception as e:
             print(e)
 
 
-@receiver(models.signals.pre_delete, sender=CompressedImage)
-def cleanup_images(sender, instance: CompressedImage, **kwargs):
-    instance.clear_files()
+class CompImageField:
+
+    def __init__(self, config: dict[str]) -> None:
+        self.config = config
+
+    @classmethod
+    def _camel_to_pascal(cls, name: str):
+        return "".join(n.title() for n in name.split("_"))
+
+    def __set_name__(self, parent: type, name: str):
+
+        model_name = f"{parent.__name__}{self._camel_to_pascal(name)}"
+        fields = {
+            "referring": ImageOneToOneField(
+                parent.__name__, on_delete=models.CASCADE, related_name=name
+            ),
+            "COMP_CONFIG": self.config,
+        }
+
+        model = create_model(
+            model_name,
+            fields,
+            module=parent.__module__,
+            bases=(CompressedImage,),
+            admin_opts=[],
+        )
+        image_sub_models[model_name] = model

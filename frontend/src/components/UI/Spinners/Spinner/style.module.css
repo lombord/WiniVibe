@@ -1,0 +1,29 @@
+.spinnerBox {
+  --spinner-color: unset;
+  --spinner-speed: 0.7;
+  --spinner-size: 4rem;
+  @apply flex-h-base items-center gap-3 bg-inherit;
+  width: min(var(--spinner-size), 100%);
+}
+
+.spinner {
+  @apply grid aspect-square h-auto w-full place-items-center rounded-full;
+
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    rgba(107, 91, 141, 0) 0deg,
+    var(--spinner-color, currentColor) 360deg
+  );
+  background-color: inherit;
+  animation: spin calc(var(--spinner-speed) * 1s) infinite linear;
+}
+
+.spinner::before {
+  @apply aspect-square h-auto w-[80%] rounded-full bg-inherit content-[''];
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}

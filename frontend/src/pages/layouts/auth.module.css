@@ -1,0 +1,55 @@
+.authBox {
+  @apply relative flex h-screen overflow-hidden;
+  ---break: theme(screens.lg);
+}
+
+.authBox > * {
+  @apply flex-1;
+}
+
+.authCover {
+  --gradient-deg: 43deg;
+  @apply flex-grow-[4] absolute inset-0 z-[1] h-full w-full bg-content2 lg:relative;
+  background-image: linear-gradient(
+    var(--gradient-deg),
+    #4158d0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+  background-size: 400%;
+  animation: rotateGradient 30s linear infinite;
+}
+
+@keyframes rotateGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  25% {
+    background-position: 100% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.authContent {
+  --content-bg: theme("colors.content1");
+  @apply centered-flex z-10 flex-grow-[3]
+  overflow-y-auto overflow-x-hidden max-lg:p-4 
+  lg:bg-[var(--content-bg)];
+}
+
+:global(:root.dark) .authContent {
+  --content-bg: theme("colors.content2");
+}
+
+.authContent > *:first-child {
+  width: min(550px, 100%);
+  @apply max-xs:p-6 m-auto rounded-3xl p-10 max-lg:bg-[var(--content-bg)];
+}

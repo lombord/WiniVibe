@@ -1,0 +1,89 @@
+.spinnerBox {
+  --spinner-color: unset;
+  --spinner-speed: unset;
+  --spinner-stroke-color: unset;
+  --stroke-width: unset;
+  --stroke-percent: var(--stroke-width) / 100;
+  @apply w-16;
+  animation: spin calc(var(--spinner-speed) / 2) ease-in-out infinite;
+}
+
+.spinnerSVG {
+  --parentD: 100px;
+  --diameter: calc(
+    var(--parentD) - var(--parentD) * var(--stroke-percent) * 1.04
+  );
+  --strokeLength: calc(var(--pi) * var(--diameter));
+  @apply w-full;
+  /* shape-rendering: auto; */
+}
+
+.spinnerSVG.clockWise {
+  transform: rotateY(0.5turn);
+}
+
+.spinnerForeignObj {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.spinnerGradient {
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+    var(--spinner-color) 0%,
+    transparent 150%
+  );
+  animation: gradientSpin var(--spinner-speed) ease-in-out infinite;
+}
+
+.spinnerStroke {
+  stroke: white;
+  stroke-width: calc(var(--stroke-width) * 1%);
+  transform-origin: center;
+  stroke-linecap: round;
+  stroke-dasharray: var(--strokeLength);
+  stroke-dashoffset: 0;
+  fill: none;
+  animation: pathStroke var(--spinner-speed) ease-in-out normal infinite;
+}
+
+@keyframes pathStroke {
+  0% {
+    stroke-dashoffset: calc(var(--strokeLength) * (-1));
+  }
+
+  40%,
+  70% {
+    stroke-dashoffset: 0%;
+  }
+
+  100% {
+    stroke-dashoffset: var(--strokeLength);
+  }
+}
+
+@keyframes gradientSpin {
+  0% {
+    transform: rotate(0);
+  }
+  40%,
+  65% {
+    transform: rotate(-270deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}

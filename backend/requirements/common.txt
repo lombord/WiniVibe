@@ -1,5 +1,16 @@
 Django>=4.2,<5
+
 # used for image handling and compression
 pillow==10.2.0
+
 # used for audio compression
 pydub==0.25.1
+
+# used for REST API support
+djangorestframework==3.15.1
+
+# for JWT based authentication
+django-rest-knox==4.2.0
+
+# PostgreSQL database adapter for Django
+psycopg[binary]==3.1.18

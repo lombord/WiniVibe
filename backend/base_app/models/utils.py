@@ -3,24 +3,74 @@ from uuid import uuid4
 from pathlib import Path
 
 
+from django.contrib import admin
+from django.db import models
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
 from django.core.exceptions import ValidationError
 from django.core.files import File
 
 
+def create_model(
+    name,
+    fields: dict[str, models.Field] = None,
+    app_label: str = "",
+    module: str = "",
+    bases: dict[type] = (models.Model,),
+    options: dict[str] = None,
+    admin_opts=None,
+):
+    """Dynamically create a new model"""
+
+    class Meta:
+        # Using type('Meta', ...) gives a dictproxy error during model creation
+        pass
+
+    if app_label:
+        # app_label must be set using the Meta inner class
+        setattr(Meta, "app_label", app_label)
+
+    # Update Meta with any options that were provided
+    if options is not None:
+        for key, value in options.iteritems():
+            setattr(Meta, key, value)
+
+    # Set up a dictionary to simulate declarations within a class
+    attrs = {"__module__": module, "Meta": Meta}
+
+    # Add in any fields that were provided
+    if fields:
+        attrs.update(fields)
+
+    # Create the class, which automatically triggers ModelBase processing
+    model = type(name, bases, attrs)
+
+    # Create an Admin class if admin options were provided
+    if admin_opts is not None:
+
+        class Admin(admin.ModelAdmin):
+            pass
+
+        for key, value in admin_opts:
+            setattr(Admin, key, value)
+        admin.site.register(model, Admin)
+
+    return model
+
+
 @deconstructible
 class DynamicPath:
 
-    def __init__(self, pattern: str, obj_name="obj", ext=None) -> None:
+    def __init__(self, pattern: str, name=None, ext=None, pass_as="obj") -> None:
         self.pattern = pattern
-        self.obj_name = obj_name
+        self.name = name
         self.ext = ext
+        self.pass_as = pass_as
 
     def __call__(self, obj, name: str) -> Path:
         ext = self.ext or os.path.splitext(name)[-1]
-        name = uuid4().hex
-        return Path(self.pattern.format(obj, **{self.obj_name: obj}), f"{name}{ext}")
+        name = self.name or uuid4().hex
+        return Path(self.pattern.format(obj, **{self.pass_as: obj}), f"{name}{ext}")
 
 
 @deconstructible
