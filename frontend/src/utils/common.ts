@@ -11,3 +11,13 @@ export function hasOwn<T>(target: T, key: string | symbol | number): boolean {
 export function hasProps<T extends {}>(obj: T): boolean {
   return !!Object.keys(obj).length;
 }
+
+export function randInt(a: number): number;
+export function randInt(a: number, b: number): number;
+export function randInt(a: number, b?: number): number {
+  if (b == null) {
+    b = a;
+    a = 0;
+  }
+  return Math.floor(Math.random() * (b - a) + a);
+}

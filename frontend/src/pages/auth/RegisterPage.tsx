@@ -5,6 +5,7 @@ import { createSection } from "@/components/Core/Form/Sections";
 import { SectionError } from "@/components/Core/Form/Sections/errors";
 import Form from "@/components/Core/Form";
 import type { SessionUser } from "@/types/user";
+import { useToastStore } from "@/stores/toastStore";
 
 const structure = createSection({
   fields: {
@@ -57,6 +58,7 @@ const structure = createSection({
 
 export const RegisterPage = () => {
   const setUser = useSessionStore.use.setUser();
+  const showMessage = useToastStore.use.showMessage();
   const navigate = useNavigate();
 
   return (
@@ -64,9 +66,21 @@ export const RegisterPage = () => {
       <Form
         structure={structure}
         config={{ url: "/auth/register/", method: "post" }}
-        succeed={(user: SessionUser) => {
+        succeed={async (user: SessionUser) => {
           setUser(user);
           navigate("/home");
+          showMessage([
+            {
+              type: "success",
+              title: "Successful registration",
+              message: "You have successfully registered in application",
+            },
+            {
+              type: "info",
+              title: "Login",
+              message: `You have logged in as ${user.username}`,
+            },
+          ]);
         }}
       />
     </AuthWrapper>

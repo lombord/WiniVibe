@@ -3,12 +3,12 @@ import Form from "@Core/Form";
 import { createSection } from "@Core/Form/Sections";
 import { useSessionStore } from "@/stores/sessionStore";
 import AuthWrapper from "@Main/AuthWrapper";
+import { useToastStore } from "@/stores/toastStore";
 
 const structure = createSection({
   fields: {
-    username: {
+    email: {
       widget: "email",
-      label: "Email",
     },
     password: {
       widget: "password",
@@ -18,6 +18,7 @@ const structure = createSection({
 
 export const LoginPage = () => {
   const signIn = useSessionStore.use.signIn();
+  const showInfo = useToastStore.use.showInfo();
   const navigate = useNavigate();
 
   return (
@@ -25,9 +26,13 @@ export const LoginPage = () => {
       <Form
         structure={structure}
         submitTitle="Login"
-        config={async ({ username, password }) => {
-          await signIn(username, password);
+        config={async ({ email, password }) => {
+          await signIn(email, password);
           navigate("/home");
+          showInfo({
+            title: "Login",
+            message: "You have logged into the app.",
+          });
         }}
       />
     </AuthWrapper>

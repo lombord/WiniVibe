@@ -1,0 +1,77 @@
+.toastRoot {
+  @apply pointer-events-none fixed inset-0 z-[100] my-2 flex justify-end
+  overflow-y-auto overflow-x-hidden px-2 md:my-4 md:px-4 lg:my-6 lg:mt-8 lg:px-6;
+}
+
+.toastMessages {
+  @apply flex flex-col gap-2 
+  max-md:w-full;
+}
+
+@media (min-width: theme("screens.md")) {
+  .toastMessages {
+    width: clamp(350px, 25%, 600px);
+  }
+}
+
+.toastMsg {
+  --toast-duration: 3s;
+  --toast-color: theme("colors.primary");
+  @apply pointer-events-auto shrink-0 
+  cursor-pointer overflow-hidden
+  rounded-xl  border border-foreground-500/20
+  bg-content1/85 backdrop-blur-lg;
+}
+
+.toastMsg:global(.error) {
+  --toast-color: theme("colors.danger");
+}
+
+.toastMsg:global(.warning) {
+  --toast-color: theme("colors.warning");
+}
+
+.toastMsg:global(.info) {
+  --toast-color: theme("colors.info");
+}
+
+.toastMsg:global(.success) {
+  --toast-color: theme("colors.success");
+}
+
+.msgProgress {
+  @apply h-1 rounded-full bg-[var(--toast-color)];
+  transform-origin: left;
+  animation: shrinkX var(--toast-duration) linear 1 forwards;
+}
+
+.toastMsg:hover .msgProgress {
+  animation-play-state: paused;
+}
+
+@keyframes shrinkX {
+  0% {
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+.toastMsgBase {
+  @apply flex items-start gap-2 px-2.5 pb-1.5 pt-2;
+}
+
+.msgIcon {
+  color: var(--toast-color);
+  @apply text-2xl md:text-3xl;
+}
+
+.toastMsgContent {
+  /* @apply text-foreground/80; */
+}
+
+.msgTitle {
+  @apply capitalize;
+}

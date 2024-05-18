@@ -13,6 +13,7 @@ import { Button } from "@nextui-org/react";
 import { isAxiosError } from "axios";
 import { useSessionStore } from "@/stores/sessionStore";
 import { animatePromise } from "@/utils/request";
+import { useToastStore } from "@/stores/toastStore";
 
 function Form<F extends Fields = Fields, S extends SectionsMap = SectionsMap>({
   title,
@@ -24,6 +25,7 @@ function Form<F extends Fields = Fields, S extends SectionsMap = SectionsMap>({
   type SD = SectionData<F, S>;
   type FP = FormProps<F, S, SD>;
 
+  const showError = useToastStore.use.showError();
   const [isLoading, setLoading] = useState(false);
   const structureRef = useRef<SectionRef<FP["structure"], SD>>(null);
 
@@ -38,6 +40,8 @@ function Form<F extends Fields = Fields, S extends SectionsMap = SectionsMap>({
       const response = await request({ ...config, data });
       succeed && succeed(response.data);
     } catch (error) {
+      showError("Something went wrong please try again.");
+
       if (isAxiosError(error)) {
         const serverError = error.response?.data;
         if (serverError && typeof serverError !== "string") {
@@ -61,7 +65,7 @@ function Form<F extends Fields = Fields, S extends SectionsMap = SectionsMap>({
         return;
       }
     } catch (error) {
-      console.log("Form Validation error:\n", error);
+      showError("Validation failed please try again.");
       return;
     }
     animatePromise(proceedRequest(data), setLoading);

@@ -86,11 +86,15 @@
   li,
   ul p,
   input {
-    @apply text-base font-medium sm:text-lg md:text-xl;
+    @apply text-base font-medium md:text-medium lg:text-lg;
+  }
+
+  .text-tip {
+    @apply text-sm font-normal md:text-base;
   }
 
   .tip {
-    @apply text-sm font-medium text-foreground-500 md:text-base;
+    @apply text-tip font-medium text-foreground-500;
   }
 
   .tip-small {

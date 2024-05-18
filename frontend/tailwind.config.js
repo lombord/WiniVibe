@@ -51,6 +51,37 @@ export default {
   plugins: [
     nextui({
       themes: {
+        light: {
+          colors: {
+            primary: primaryLight,
+            focus: primaryLight,
+            secondary: {
+              100: "#FEF6D1",
+              200: "#FEEBA4",
+              300: "#FDDD76",
+              400: "#FCCF54",
+              500: "#FBB81C",
+              600: "#D79714",
+              700: "#B4780E",
+              800: "#915B08",
+              900: "#784705",
+              DEFAULT: "#FBB81C",
+            },
+
+            info: {
+              100: "#CCFAFF",
+              200: "#99EFFF",
+              300: "#66DDFF",
+              400: "#3FC9FF",
+              500: "#00A7FF",
+              600: "#0081DB",
+              700: "#0060B7",
+              800: "#004493",
+              900: "#00317A",
+              DEFAULT: "#00A7FF",
+            },
+          },
+        },
         dark: {
           colors: {
             primary: primaryDark,
@@ -90,23 +121,18 @@ export default {
               200: "#404040",
               100: "#262626",
             },
-          },
-        },
-        light: {
-          colors: {
-            primary: primaryLight,
-            focus: primaryLight,
-            secondary: {
-              100: "#FEF6D1",
-              200: "#FEEBA4",
-              300: "#FDDD76",
-              400: "#FCCF54",
-              500: "#FBB81C",
-              600: "#D79714",
-              700: "#B4780E",
-              800: "#915B08",
-              900: "#784705",
-              DEFAULT: "#FBB81C",
+
+            info: {
+              100: "#D7FBFF",
+              200: "#AFF2FF",
+              300: "#87E5FF",
+              400: "#69D5FF",
+              500: "#38BBFF",
+              600: "#2893DB",
+              700: "#1C6EB7",
+              800: "#114E93",
+              900: "#0A377A",
+              DEFAULT: "#38BBFF",
             },
           },
         },
