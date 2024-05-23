@@ -23,6 +23,10 @@ export default defineConfig({
         target: `http://${serverEndpoint}`,
         secure: false,
       },
+      "/media": {
+        target: `http://${serverEndpoint}`,
+        secure: false,
+      },
     },
   },
 });

@@ -23,3 +23,5 @@ export interface User {
 export type SessionUser = Pick<User, "id" | "username" | "email" | "status"> & {
   profile: Pick<UserProfile, "photo">;
 };
+
+export type DetailedUser = User;

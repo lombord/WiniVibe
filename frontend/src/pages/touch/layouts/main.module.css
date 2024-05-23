@@ -1,0 +1,11 @@
+.layoutBox {
+  @apply h-screen overflow-y-auto overflow-x-hidden;
+}
+
+.layoutContent {
+  @apply h-full pb-20;
+}
+
+.navbar {
+  @apply fixed inset-x-0 bottom-0 z-10;
+}

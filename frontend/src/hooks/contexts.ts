@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 import { ThemeCtxType } from "./theme";
 
-export const MobileContext = createContext<boolean>(false);
-export const useMobileCtx = () => useContext(MobileContext);
+export const TouchContext = createContext<boolean>(false);
+export const useTouchCtx = () => useContext(TouchContext);
 
 export const ThemeContext = createContext<ThemeCtxType | null>(null);
 export const useThemeCtx = (): ThemeCtxType => {

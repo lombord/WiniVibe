@@ -5,15 +5,11 @@ type WindowSize = {
   height?: number;
 };
 
-enum ScreenSize {
-  mobile = 768,
-}
-
 export function getWindowSize(): WindowSize {
   return { width: window.innerWidth, height: window.innerHeight };
 }
 
-export function useWindowResizeEffect(handler: () => void) {
+export function useWindowResize(handler: () => void) {
   useEffect(() => {
     handler();
     window.addEventListener("resize", handler);
@@ -27,10 +23,6 @@ export function useIsWindowChanged(limit: number) {
     setIsChanged(window.innerWidth > limit);
   }
 
-  useWindowResizeEffect(handleResize);
+  useWindowResize(handleResize);
   return isChanged;
-}
-
-export function useIsMobile(): boolean {
-  return !useIsWindowChanged(ScreenSize.mobile);
 }

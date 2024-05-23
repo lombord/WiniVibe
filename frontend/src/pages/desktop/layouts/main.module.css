@@ -1,0 +1,12 @@
+.layoutBox {
+  @apply flex h-screen overflow-hidden;
+}
+
+.navbar {
+}
+
+.layoutContent {
+  @apply flex-1 overflow-y-auto flex flex-col;
+}
+
+

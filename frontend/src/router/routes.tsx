@@ -1,45 +1,44 @@
 import { createRoutesFromElements, redirect, Route } from "react-router-dom";
-import AppLayout from "@/pages/layouts/MainLayout";
-import LoginLayout from "@/pages/layouts/AuthLayout";
 
-import NotFoundPage from "@/pages/ErrorPage";
-import HomePage from "@/pages/HomePage";
-import PlaylistsPage from "@/pages/PlaylistsPage";
+// layouts
+import Root from "@/pages/common/layouts/Root";
 
-// auth pages
-import { RegisterPage, LoginPage, LogoutPage } from "@/pages/auth";
-import store from "@/stores/sessionStore";
+import NotFoundPage from "@/pages/common/NotFoundPage";
+import HomePage from "@/pages/common/HomePage";
+import PlaylistsPage from "@/pages/common/PlaylistsPage";
 
-const guestLoader = async () => {
-  const { user } = store.getState();
-  if (user) {
-    return redirect("/home");
-  }
-  return null;
-};
+// auth components
+import {
+  AuthLayout,
+  RegisterPage,
+  LoginPage,
+  LogoutPage,
+} from "@/pages/common/auth";
 
-const sessionLoader = async () => {
-  const { user } = store.getState();
-  if (!user) {
-    return redirect("/auth/login");
-  }
-  return null;
-};
+import { guestLoader, profileLoader, sessionLoader } from "./loaders";
+import { AppLayout, ProfilePage } from "./lazyLoaded";
 
 const routes = createRoutesFromElements(
-  <>
-    <Route path="/" Component={AppLayout}>
+  <Route Component={Root}>
+    <Route path="/" element={<AppLayout />}>
       <Route index loader={() => redirect("/home")} />
       <Route path="/home" Component={HomePage} />
       <Route path="/playlists" Component={PlaylistsPage} />
+      <Route path="/user/:username">
+        <Route index element={<ProfilePage />} />
+      </Route>
     </Route>
-    <Route path="/auth" loader={guestLoader} Component={LoginLayout}>
+    <Route path="/auth" loader={guestLoader} Component={AuthLayout}>
       <Route index loader={() => redirect("/auth/login")} />
       <Route path="login" Component={LoginPage} />
       <Route path="register" Component={RegisterPage} />
     </Route>
+    <Route path="/profile" loader={sessionLoader}>
+      <Route index loader={profileLoader} />
+    </Route>
     <Route path="/logout" Component={LogoutPage} loader={sessionLoader} />
     <Route path="*" Component={NotFoundPage} />
-  </>,
+  </Route>,
 );
+
 export default routes;

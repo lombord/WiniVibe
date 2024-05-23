@@ -1,0 +1,11 @@
+.topbar {
+  @apply flex-h-base p-4 lg:p-6 lg:pl-0;
+}
+
+.topbarLeft {
+  @apply flex-1 truncate;
+}
+
+.topbarRight {
+  @apply flex gap-2 md:gap-3;
+}

@@ -12,7 +12,7 @@ type SessionComputed = {
 type SessionActions = {
   computed: SessionComputed;
   setUser(user: SessionUser): void;
-  signIn(username: string, password: string): Promise<void>;
+  signIn(username: string, password: string): Promise<SessionUser | never>;
   logout(): Promise<void>;
   loadSession(): Promise<boolean>;
 };
@@ -46,6 +46,7 @@ export const createSessionSlice: SessionStateCreator<SessionSlice> = (
       const response = await get().post<SessionUser>("auth/login/", data);
       get().setUser(response.data);
     }
+    return get().user as SessionUser;
   },
 
   async logout() {

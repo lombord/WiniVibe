@@ -25,11 +25,17 @@
       "@/*": [
         "./src/*"
       ],
-      "@Core/*": [
-        "./src/components/Core/*"
+      "@Base/*": [
+        "./src/components/base/*"
       ],
-      "@Main/*": [
-        "./src/components/Main/*"
+      "@Common/*": [
+        "./src/components/common/*"
+      ],
+      "@Desktop/*": [
+        "./src/components/desktop/*"
+      ],
+      "@Touch/*": [
+        "./src/components/touch/*"
       ],
     },
     "noErrorTruncation": true

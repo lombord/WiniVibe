@@ -1,21 +1,21 @@
 import "./App.css";
 
-import { MobileContext, ThemeContext } from "./hooks/contexts";
-import { useIsMobile } from "./hooks/window";
+import { TouchContext, ThemeContext } from "./hooks/contexts";
 import { useTheme } from "./hooks/theme";
-import Entrypoint from "@Main/Entrypoint";
-import Toast from "@Core/Toast";
+import Entrypoint from "@Common/Entrypoint";
+import Toast from "@Base/Toast";
+import useDeviceStore from "./stores/deviceStore";
 
 function App() {
-  const isMobile = useIsMobile();
+  const isTouch = useDeviceStore((state) => state.isTouch());
   const theme = useTheme();
 
   return (
     <ThemeContext.Provider value={theme}>
-      <MobileContext.Provider value={isMobile}>
+      <TouchContext.Provider value={isTouch}>
         <Entrypoint />
         <Toast />
-      </MobileContext.Provider>
+      </TouchContext.Provider>
     </ThemeContext.Provider>
   );
 }

@@ -15,13 +15,13 @@ export type SessionStateCreator<SliceState> = StateCreator<
   SliceState
 >;
 
-const store = create<SessionBoundSlices>()(
+const sessionStore = create<SessionBoundSlices>()(
   immer((...args) => ({
     ...createRequestSlice(...args),
     ...createSessionSlice(...args),
   })),
 );
 
-export const useSessionStore = createSelectors(store);
+export const useSessionStore = createSelectors(sessionStore);
 
-export default store;
+export default sessionStore;

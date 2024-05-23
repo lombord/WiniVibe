@@ -3,7 +3,7 @@ import type {
   ToastItem,
   ToastItems,
   ToastTypes,
-} from "@Core/Toast/types";
+} from "@/components/base/Toast/types";
 
 type ToastNoId = Omit<ToastItem, "id">;
 
