@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from itertools import chain
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -28,6 +29,10 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL, view=range_serve, document_root=settings.MEDIA_ROOT
+    debug_urls = chain(
+        static(settings.MEDIA_URL, view=range_serve, document_root=settings.MEDIA_ROOT),
+        [
+            path("__debug__/", include("debug_toolbar.urls")),
+        ],
     )
+    urlpatterns.extend(debug_urls)

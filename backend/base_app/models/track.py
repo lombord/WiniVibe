@@ -15,8 +15,9 @@ from django.dispatch import receiver
 
 
 from .utils import DynamicPath, FileValidator
-from .abstract import CommentBase, CompImageField
-from .constants import (
+from .abstract import CommentBase
+from .compressed import CompImageField
+from .config import (
     VALID_AUDIO_EXTS,
     VALID_AUDIO_MIMES,
     MAX_AUDIO_SIZE,
@@ -53,10 +54,9 @@ class Track(models.Model):
     )
     is_public = models.BooleanField(_("Is public track"), default=True, blank=True)
     cover_image = CompImageField(
-        {
-            "path": "users/{obj.uploaded_by_id}/tracks/{obj.uuid}/images",
-            "sizes": {"large": (500, 500)},
-        }
+        path="users/{obj.uploaded_by_id}/tracks/{obj.uuid}/images",
+        sizes={"large": (500, 500)},
+        extract_color=True,
     )
     track = models.FileField(
         _("Track file"),

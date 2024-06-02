@@ -1,3 +1,4 @@
+import HeaderImage from "@/components/common/User/HeaderImage";
 import { useFetchProfile } from "@/hooks/fetch";
 
 export const Component = () => {
@@ -8,8 +9,7 @@ export const Component = () => {
 
   return (
     <div>
-      <h2 className="text-center text-primary">{user.username}</h2>
-      <h3 className="text-center text-secondary">Mobile</h3>
+      <HeaderImage src={user.profile.header_image.medium} />
     </div>
   );
 };

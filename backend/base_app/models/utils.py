@@ -1,4 +1,6 @@
 import os
+from random import randrange
+from typing import Iterable
 from uuid import uuid4
 from pathlib import Path
 
@@ -12,15 +14,29 @@ from django.core.files import File
 
 
 def create_model(
-    name,
+    name: str,
     fields: dict[str, models.Field] = None,
-    app_label: str = "",
-    module: str = "",
-    bases: dict[type] = (models.Model,),
+    app_label: str = None,
+    module: str = None,
+    bases: Iterable[type] = None,
     options: dict[str] = None,
-    admin_opts=None,
-):
-    """Dynamically create a new model"""
+    admin_opts: dict[str] = None,
+) -> models.Model:
+    """
+    Dynamically creates django model
+
+    Args:
+        name (str): _Name of the model/class(should be unique for app)_
+        fields (dict[str, models.Field], optional): _Fields/class attributes of the model_. Defaults to None.
+        app_label (str, optional): _Application label/name of the model_. Defaults to "".
+        module (str, optional): _Module of the model_. Defaults to "".
+        bases (Iterable[type], optional): _Parent/Base classes of the model_. Defaults to (models.Model,).
+        options (dict[str], optional): _Meta class attributes_. Defaults to None.
+        admin_opts (dict[str], optional): _Admin class attributes_. Defaults to None.
+
+    Returns:
+        models.Model: New model class
+    """
 
     class Meta:
         # Using type('Meta', ...) gives a dictproxy error during model creation
@@ -43,7 +59,7 @@ def create_model(
         attrs.update(fields)
 
     # Create the class, which automatically triggers ModelBase processing
-    model = type(name, bases, attrs)
+    model = type(name, bases or (models.Model,), attrs)
 
     # Create an Admin class if admin options were provided
     if admin_opts is not None:

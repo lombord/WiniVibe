@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import router from "@/router";
 import { Suspense } from "react";
-import VPSpinner from "../Spinners/VPSpinner";
+import VPSpinner from "@Base/Spinners/VPSpinner";
 
 const Dispatcher = () => {
   return (

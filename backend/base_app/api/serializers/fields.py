@@ -12,4 +12,5 @@ class CompImageField(SR.ImageField):
             "small": super().to_representation(value.small),
             "medium": super().to_representation(value.medium),
             "large": super().to_representation(value.large),
+            "color": getattr(value, "extracted_color", None),
         }

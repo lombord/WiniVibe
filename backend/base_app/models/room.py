@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .common import Tag
-from .abstract import CompImageField
+from .compressed import CompImageField
 
 
 class Room(models.Model):
@@ -16,10 +16,9 @@ class Room(models.Model):
     )
     queue_tracks = models.ManyToManyField("Track", related_name="rooms")
     cover_image = CompImageField(
-        {
-            "path": "users/{obj.host_id}/room/",
-            "sizes": {"large": (500, 500)},
-        }
+        path="users/{obj.host_id}/room/",
+        sizes={"large": (500, 500)},
+        extract_color=True,
     )
     tags = models.ManyToManyField(Tag, related_name="rooms")
 

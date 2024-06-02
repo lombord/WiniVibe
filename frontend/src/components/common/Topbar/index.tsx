@@ -33,7 +33,7 @@ const Topbar = () => {
   return (
     <div className={styles.topbar}>
       <div className={styles.topbarLeft}>
-        <span className="h3">Good Evening</span>
+        <span className="h4">Good Evening</span>
       </div>
 
       <div className={styles.topbarRight}>
@@ -64,6 +64,7 @@ const Topbar = () => {
                   <DropdownItem
                     hidden={!user}
                     key="profile"
+                    href="/profile/"
                     startContent={<Profile {...iconProps} />}
                   >
                     Profile

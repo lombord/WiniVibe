@@ -34,6 +34,18 @@
     @apply leading-[1.2] !important;
   }
 
+  .h-3xl {
+    @apply text-7xl md:text-8xl lg:text-9xl;
+  }
+
+  .h-2xl {
+    @apply text-6xl md:text-7xl lg:text-8xl;
+  }
+
+  .h-xl {
+    @apply text-5xl md:text-6xl lg:text-7xl;
+  }
+
   .h1 {
     @apply text-4xl md:text-5xl lg:text-6xl;
   }

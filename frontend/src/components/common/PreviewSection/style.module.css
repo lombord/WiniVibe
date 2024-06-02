@@ -1,0 +1,16 @@
+.sectionHeader {
+  @apply flex-between py-1;
+}
+
+.sectionTitle {
+  @apply h5 h-full hover:underline;
+}
+
+.titleLink {
+  font-size: inherit;
+}
+
+.showAll {
+  @apply tip text-foreground opacity-80 transition-all 
+  hover:underline hover:opacity-100;
+}

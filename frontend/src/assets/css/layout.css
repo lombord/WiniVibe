@@ -10,4 +10,32 @@
   .centered-flex {
     @apply flex items-center justify-center;
   }
+
+  .flex-between {
+    @apply flex items-center justify-between gap-2;
+  }
+
+  .dynamic-grid {
+    --col-count: auto-fill;
+    --row-count: auto-fill;
+    --min-col: 0;
+    --max-col: 1fr;
+    --min-row: 0;
+    --max-row: 1fr;
+    display: grid;
+    grid-template-columns: repeat(
+      var(--col-count),
+      minmax(min(var(--min-col), 100%), var(--max-col))
+    );
+    grid-template-rows: repeat(
+      var(--row-count),
+      minmax(var(--min-row), var(--max-row))
+    );
+    --gap-inner: var(--gap, theme("gap.2"));
+    gap: var(--gap-inner);
+    row-gap: var(--row-gap, var(--gap-inner));
+    column-gap: var(--col-gap, var(--gap-inner));
+    grid-auto-rows: var(--auto-rows, initial);
+    grid-auto-columns: var(--auto-cols, initial);
+  }
 }

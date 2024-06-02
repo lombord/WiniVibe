@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Iterable
+from typing import Iterable, Union
 
 from rest_framework import serializers as SR
 from django.db import transaction, IntegrityError
@@ -55,26 +55,34 @@ class ModelValidationMixin:
         return instance
 
 
+FieldSelect = Union[tuple[str], dict[str, dict | None]]
+
+
 class DynamicFieldsMixin:
     """
     Mixin to add dynamic fields feature
     """
 
+    default_include: FieldSelect = None
+    default_exclude: FieldSelect = None
+
     def __init__(
         self,
         *args,
-        include: dict[str, dict | None] = None,
-        exclude: dict[str, dict | None] = None,
-        **kwargs
+        include: FieldSelect = None,
+        exclude: FieldSelect = None,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
+        include = include or self.default_include
+        exclude = exclude or self.default_exclude
         if exclude or include:
             self._filter_fields(include, exclude)
 
     def _filter_fields(
         self,
-        include: dict[str, dict | None] = None,
-        exclude: dict[str, dict | None] = None,
+        include: FieldSelect = None,
+        exclude: FieldSelect = None,
     ):
         assert not (include and exclude), "Can't have both include and exclude!"
         if exclude or include:

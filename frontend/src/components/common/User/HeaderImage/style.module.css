@@ -1,0 +1,21 @@
+.headerBox {
+  --bg-color: theme("colors.primary");
+  @apply relative;
+}
+
+.wrapper {
+  @apply bg-before-overlay;
+}
+
+.wrapper {
+  @apply absolute inset-0 -z-10
+  !max-w-full bg-[var(--bg-color)];
+}
+
+.wrapper::before {
+  @apply z-10;
+}
+
+.headerImage {
+  @apply relative z-0 h-full w-full object-cover;
+}

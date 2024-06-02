@@ -1,5 +1,5 @@
 import { useLoadSession } from "@/hooks/fetch";
-import VPSpinner from "@/components/common/Spinners/VPSpinner";
+import VPSpinner from "@Base/Spinners/VPSpinner";
 import { Suspense, lazy } from "react";
 
 const Dispatcher = lazy(() => import("./Dispatcher"));

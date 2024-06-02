@@ -16,7 +16,12 @@ import {
 } from "@/pages/common/auth";
 
 import { guestLoader, profileLoader, sessionLoader } from "./loaders";
-import { AppLayout, ProfilePage } from "./lazyLoaded";
+import useDeviceStore from "@/stores/deviceStore";
+
+const isTouch = useDeviceStore.getState().isTouch();
+
+var { AppLayout, ProfileLayout, ProfilePage, FollowersPage, FollowingPage } =
+  isTouch ? await import("./desktopComps") : await import("./desktopComps");
 
 const routes = createRoutesFromElements(
   <Route Component={Root}>
@@ -24,8 +29,10 @@ const routes = createRoutesFromElements(
       <Route index loader={() => redirect("/home")} />
       <Route path="/home" Component={HomePage} />
       <Route path="/playlists" Component={PlaylistsPage} />
-      <Route path="/user/:username">
-        <Route index element={<ProfilePage />} />
+      <Route path="/user/:username" element={ProfileLayout}>
+        <Route index element={ProfilePage} />
+        <Route path="followers" element={FollowersPage} />
+        <Route path="following" element={FollowingPage} />
       </Route>
     </Route>
     <Route path="/auth" loader={guestLoader} Component={AuthLayout}>

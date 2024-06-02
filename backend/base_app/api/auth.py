@@ -8,7 +8,6 @@ from rest_framework.exceptions import AuthenticationFailed
 class TokenAuthentication(KnoxTokenAuthentication, SessionAuthentication):
 
     def authenticate(self, request):
-        print("BRO IS BEING LOGGED")
         token_config = settings.REST_KNOX
         token = request.COOKIES.get(token_config["AUTH_COOKIE_KEY"])
         if token:

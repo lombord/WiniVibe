@@ -6,12 +6,12 @@ interface SpinnerProps {
   color?: string;
   strokeWidth?: number;
   speed?: number;
-  wrapperClass?: string;
+  className?: string;
   clockWise?: boolean;
 }
 
 const Spinner: FC<SpinnerProps> = ({
-  wrapperClass,
+  className,
   color = "currentColor",
   strokeWidth = 10,
   speed = 2.75,
@@ -26,7 +26,7 @@ const Spinner: FC<SpinnerProps> = ({
   } as React.CSSProperties;
   return (
     <div
-      className={`${styles.spinnerBox} ${wrapperClass || ""}`}
+      className={`${styles.spinnerBox} ${className || ""}`}
       style={spinnerConf}
     >
       <svg

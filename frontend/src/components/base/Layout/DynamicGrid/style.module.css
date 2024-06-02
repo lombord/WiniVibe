@@ -1,0 +1,10 @@
+.horizontalGrid {
+  --row-count: 1;
+  --auto-rows: 0;
+  --row-gap: 0;
+  @apply overflow-hidden;
+}
+
+.horizontalGrid > * {
+  @apply min-h-0 min-w-0 overflow-hidden !important;
+}

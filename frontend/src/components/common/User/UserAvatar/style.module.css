@@ -1,0 +1,26 @@
+.wrapper {
+  @apply bg-before-overlay border border-transparent bg-content1;
+  --overlay-color: theme("colors.content3/0.8");
+}
+
+.avatarColor {
+  --overlay-color: theme("colors.black/0.5");
+
+  @apply border-none bg-[var(--avatar-color)];
+}
+
+.avatarImg {
+  @apply h-full w-full object-cover object-center;
+}
+
+.avatarIcon {
+  @apply w-[50%] max-w-[180px] text-foreground/90;
+}
+
+.avatarColor .avatarIcon {
+  @apply text-white/80;
+}
+
+.avatarFallback {
+  @apply h-full w-full;
+}

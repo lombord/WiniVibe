@@ -1,6 +1,7 @@
 // User related types
 
 import type { CompressedImage } from "./common";
+import { OffsetPagination } from "./fetch";
 
 export interface UserProfile {
   photo: CompressedImage;
@@ -24,4 +25,15 @@ export type SessionUser = Pick<User, "id" | "username" | "email" | "status"> & {
   profile: Pick<UserProfile, "photo">;
 };
 
-export type DetailedUser = User;
+export type PublicUser = Pick<User, "id" | "username"> & {
+  profile: Pick<UserProfile, "photo">;
+};
+
+export type ProfileUser = User & {
+  followers_count?: number;
+  following_count?: number;
+  followers?: PublicUser[];
+  following?: PublicUser[];
+};
+
+export type OffsetUsers = OffsetPagination<PublicUser>;

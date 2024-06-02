@@ -1,5 +1,5 @@
 .topbar {
-  @apply flex-h-base p-4 lg:p-6 lg:pl-0;
+  @apply flex-h-base py-4;
 }
 
 .topbarLeft {

@@ -1,13 +1,56 @@
 from urllib.parse import urlparse
 
 from django.db import models
-from django.db.models import F
-from django.contrib.auth.models import AbstractUser
+from django.db.models import F, Count, Subquery, OuterRef
+from django.contrib.auth.models import AbstractUser, UserManager as DJUserManager
 from django.utils.translation import gettext_lazy as _
 
 
-from .abstract import CompImageField
+from .compressed import CompImageField
 from .fields import AutoOneToOneField
+
+
+class UserQuerySet(models.QuerySet):
+
+    def annotate_followers(self):
+        followers_qs = Subquery(
+            UserFollow.objects.filter(following=OuterRef("pk"))
+            .values("following__pk")
+            .annotate(f_count=Count("pk"))
+            .values("f_count")
+        )
+        following_qs = Subquery(
+            UserFollow.objects.filter(follower=OuterRef("pk"))
+            .values("follower__pk")
+            .annotate(f_count=Count("pk"))
+            .values("f_count")
+        )
+        return self.annotate(
+            _followers_count=followers_qs,
+            _following_count=following_qs,
+        )
+
+    def select_profile(self):
+        return self.select_related("profile", "profile__header_image", "profile__photo")
+
+    def select_photo(self):
+        return self.select_related("profile", "profile__photo")
+
+
+class UserManager(DJUserManager):
+
+    def get_queryset(self) -> UserQuerySet:
+        return UserQuerySet(self.model, using=self._db)
+
+    def fetch_public(self) -> UserQuerySet:
+        return (
+            self.get_queryset()
+            .select_photo()
+            .only("id", "username", "profile", "profile__photo")
+        )
+
+    def fetch_profile(self) -> UserQuerySet:
+        return self.get_queryset().annotate_followers().select_profile()
 
 
 class User(AbstractUser):
@@ -33,11 +76,21 @@ class User(AbstractUser):
     USERNAME_FIELD: str = "email"
     REQUIRED_FIELDS: list[str] = ["username"]
 
+    objects: UserManager = UserManager()
+
     class Meta:
         indexes = [
             # Indexing user status to speed up sorting
             models.Index(F("status").desc(), name="user_status_idx"),
         ]
+
+    @property
+    def followers_count(self):
+        return getattr(self, "_followers_count", None)
+
+    @property
+    def following_count(self):
+        return getattr(self, "_following_count", None)
 
 
 class UserTrackQueue(models.Model):
@@ -48,14 +101,16 @@ class UserTrackQueue(models.Model):
 class UserProfile(models.Model):
 
     photo = CompImageField(
-        {"path": "users/{obj.user_id}/photo/", "sizes": {"large": (500, 500)}}
+        path="users/{obj.user_id}/photo/",
+        sizes={"large": (500, 500)},
+        extract_color=True,
     )
 
     header_image = CompImageField(
-        {
-            "path": "users/{obj.user_id}/header/",
-            "sizes": {"large": (1500, 350), "small": 0},
-        }
+        path="users/{obj.user_id}/header/",
+        sizes={"large": (1400, 350), "small": 0},
+        extract_color=True,
+        extract_resize=True,
     )
 
     city = models.CharField(_("City"), max_length=100, null=True, blank=True)

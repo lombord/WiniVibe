@@ -68,17 +68,45 @@ class UserSerializer(DynamicFieldsMixin, ModelValidationMixin, SR.ModelSerialize
         return super().custom_update(instance, validated_data)
 
 
-SESSION_KWARGS = {
-    "exclude": {
+class PublicUserSerializer(UserSerializer):
+    default_include = {
+        "id": None,
+        "username": None,
         "profile": {"include": ("photo",)},
-        "first_name": None,
-        "last_name": None,
     }
-}
 
 
 class UserSessionSerializer(UserSerializer):
+    default_include = {
+        "id": None,
+        "username": None,
+        "email": None,
+        "profile": {"include": ("photo",)},
+    }
 
-    def __init__(self, *args, **kwargs):
-        kwargs.update(SESSION_KWARGS)
-        super().__init__(*args, **kwargs)
+
+class UserProfileSerializer(UserSerializer):
+    followers = SR.SerializerMethodField()
+    following = SR.SerializerMethodField()
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + (
+            "followers",
+            "following",
+            "followers_count",
+            "following_count",
+        )
+
+    def get_followers(self, user: User):
+        limit = int(self.context["request"].query_params.get("followers_limit", "0"))
+        if limit and user.followers_count:
+            return PublicUserSerializer(
+                list(user.followers.fetch_public()[:limit]), many=True
+            ).data
+
+    def get_following(self, user: User):
+        limit = int(self.context["request"].query_params.get("following_limit", "0"))
+        if limit and user.following_count:
+            return PublicUserSerializer(
+                list(user.following.fetch_public()[:limit]), many=True
+            ).data

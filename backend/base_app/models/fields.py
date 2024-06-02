@@ -1,6 +1,8 @@
-from typing import Any, Callable
 from django.db import models, transaction
 from django.db.models import signals
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
+
 from django.db.models.fields.related_descriptors import (
     ReverseOneToOneDescriptor,
     ForwardOneToOneDescriptor,
@@ -17,7 +19,7 @@ class SaveRelated:
     def __call__(self, sender, instance: models.Model, **kwds):
         if instance is self.instance:
             self.related.save()
-        assert signals.post_save.disconnect(self, sender), "receiver is not removed"
+            assert signals.post_save.disconnect(self, sender), "receiver is not removed"
 
 
 class AutoReverseDescriptor(ReverseOneToOneDescriptor):
@@ -29,11 +31,12 @@ class AutoReverseDescriptor(ReverseOneToOneDescriptor):
             return super().__get__(instance, cls)
         except self.RelatedObjectDoesNotExist:
 
-            # Using get_or_create instead() of save() or create() as it better handles race conditions
+            # if instance has pk then try to create the related object
             if instance.pk:
                 obj, _ = model.objects.get_or_create(
                     **{self.related.field.name: instance}
                 )
+            # else create related without saving it until instance is created
             else:
                 obj = model(**{self.related.field.name: instance})
                 signals.post_save.connect(SaveRelated(instance, obj), type(instance))
@@ -49,6 +52,7 @@ class AutoForwardDescriptor(ForwardOneToOneDescriptor):
 
     def __get__(self, instance, cls=None):
         rel_obj = super().__get__(instance, cls)
+
         if rel_obj is None and instance:
             try:
                 with transaction.atomic():
@@ -57,6 +61,7 @@ class AutoForwardDescriptor(ForwardOneToOneDescriptor):
                     instance.save()
             except Exception as e:
                 print(e)
+
         return rel_obj
 
 
@@ -82,3 +87,22 @@ class ImageOneToOneField(AutoOneToOneField):
     """Compressed image file field"""
 
     related_accessor_class = ImageReverseDescriptor
+
+
+hex_color_validator = RegexValidator(
+    r"^#(?:[0-9a-fA-F]{3}){1,2}$", message=_("Invalid hex color")
+)
+
+
+class ColorField(models.CharField):
+    description = _("Hex Color field")
+    default_validators = [hex_color_validator]
+
+    def __init__(self, *args, **kwargs) -> None:
+        kwargs["max_length"] = 7
+        super().__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        del kwargs["max_length"]
+        return name, path, args, kwargs

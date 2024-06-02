@@ -1,0 +1,40 @@
+.profileBox {
+  --box-x-padding: clamp(1rem, 1vw, 1.5rem);
+  @apply relative z-0 mb-4 overflow-hidden rounded-xl bg-content3;
+}
+
+.headerBox {
+  @apply flex h-[250px] items-end md:h-[300px] lg:h-[350px];
+}
+
+.headerContentBox {
+  @apply flex flex-1 items-center gap-6 px-[var(--box-x-padding)] pb-6;
+}
+
+.headerInfoBox {
+  @apply text-white;
+}
+
+.profileImage {
+  @apply aspect-square h-auto w-[25%] 
+  min-w-[150px] max-w-[230px] shadow-2xl;
+}
+
+.profileGradient {
+  --bg-color: theme("colors.primary");
+  @apply absolute -z-10 h-[262px] w-full bg-[var(--bg-color)];
+}
+
+.profileGradient::before {
+  @apply pointer-events-none absolute inset-0 bg-gradient-to-b 
+  from-black/40 to-content3 content-[''];
+}
+
+.username {
+  @apply h-2xl;
+}
+
+.profileContent {
+  @apply flex-v-base min-h-[500px] 
+  gap-6 px-[var(--box-x-padding)] py-4 pt-8;
+}

@@ -10,9 +10,11 @@ export const Component = () => {
       <div className={styles.navbar}>
         <Navigation />
       </div>
-      <div className={styles.layoutContent}>
-        <Topbar />
-        <Outlet />
+      <div className="w-full overflow-y-auto">
+        <div className={styles.layoutContent}>
+          <Topbar />
+          <Outlet />
+        </div>
       </div>
     </div>
   );
