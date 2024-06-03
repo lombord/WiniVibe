@@ -21,13 +21,7 @@
 }
 
 .profileGradient {
-  --bg-color: theme("colors.primary");
-  @apply absolute -z-10 h-[262px] w-full bg-[var(--bg-color)];
-}
-
-.profileGradient::before {
-  @apply pointer-events-none absolute inset-0 bg-gradient-to-b 
-  from-black/40 to-content3 content-[''];
+  @apply absolute -z-10 h-[262px] !important;
 }
 
 .username {

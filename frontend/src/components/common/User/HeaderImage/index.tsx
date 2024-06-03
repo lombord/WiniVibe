@@ -27,6 +27,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
           }}
           radius="none"
           disableSkeleton
+          loading="lazy"
           removeWrapper
           {...props}
           alt={alt}

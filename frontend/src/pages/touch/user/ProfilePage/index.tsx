@@ -1,9 +1,9 @@
-import React from "react";
-
 export const Component = () => {
   return (
     <div>
-      <h1 className="text-primary">FollowersPage</h1>
+      {Array.from({ length: 50 }).map((_, i) => (
+        <h2 key={i}>ProfilePage</h2>
+      ))}
     </div>
   );
 };

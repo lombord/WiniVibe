@@ -12,7 +12,9 @@ interface UserAvatarProps extends AvatarProps {
 const UserAvatar: FC<UserAvatarProps> = ({ bgColor, ...props }) => {
   return (
     <Avatar
-      loading="lazy"
+      imgProps={{
+        loading: "lazy",
+      }}
       classNames={{
         base: `${styles.wrapper} ${bgColor ? styles.avatarColor : ""}`,
         img: styles.avatarImg,

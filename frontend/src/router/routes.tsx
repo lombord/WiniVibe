@@ -21,7 +21,7 @@ import useDeviceStore from "@/stores/deviceStore";
 const isTouch = useDeviceStore.getState().isTouch();
 
 var { AppLayout, ProfileLayout, ProfilePage, FollowersPage, FollowingPage } =
-  isTouch ? await import("./desktopComps") : await import("./desktopComps");
+  isTouch ? await import("./touchComps") : await import("./desktopComps");
 
 const routes = createRoutesFromElements(
   <Route Component={Root}>
@@ -45,7 +45,7 @@ const routes = createRoutesFromElements(
     </Route>
     <Route path="/logout" Component={LogoutPage} loader={sessionLoader} />
     <Route path="*" Component={NotFoundPage} />
-  </Route>,
+  </Route>
 );
 
 export default routes;

@@ -86,11 +86,11 @@ class User(AbstractUser):
 
     @property
     def followers_count(self):
-        return getattr(self, "_followers_count", None)
+        return getattr(self, "_followers_count", 0) or 0
 
     @property
     def following_count(self):
-        return getattr(self, "_following_count", None)
+        return getattr(self, "_following_count", 0) or 0
 
 
 class UserTrackQueue(models.Model):

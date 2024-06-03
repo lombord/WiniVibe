@@ -1,0 +1,5 @@
+.profileHeader {
+  --from-color: transparent;
+  --to-color: theme("colors.content2");
+  @apply !-z-10 pt-10 pb-2;
+}

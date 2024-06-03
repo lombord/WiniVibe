@@ -16,7 +16,7 @@ export const Component: FC<ProfileUsersProps> = ({ title, subPath }) => {
 
   return (
     <div>
-      <h2 className="h3 mb-4 text-center text-white">{title}</h2>
+      <h2 className="h3 mb-2 text-white">{title}</h2>
       {user ? (
         <OffsetFetch<PublicUser>
           endpoint={`users/${user.username}/${subPath}`}

@@ -1,5 +1,4 @@
 import { Suspense, lazy } from "react";
-import { wait } from "@/utils/request";
 
 // Non lazy components //
 import AppLayout from "@/pages/desktop/layouts/AppLayout";
@@ -20,6 +19,8 @@ const ProfileLazy = lazy(async () => {
   return await import("@/pages/desktop/user/ProfilePage");
 });
 
+const ProfileUsers = lazy(() => import("@/pages/desktop/user/ProfileUsers"));
+
 // Suspended components //
 export const ProfileLayout = (
   <Suspense fallback={<ProfileLayoutSkeleton />}>
@@ -32,8 +33,6 @@ export const ProfilePage = (
     <ProfileLazy />
   </Suspense>
 );
-
-const ProfileUsers = lazy(() => import("@/pages/desktop/user/ProfileUsers"));
 
 export const FollowersPage = (
   <Suspense fallback={<ProfileUsersSkeleton title="Followers" />}>

@@ -7,5 +7,5 @@
 
 .layoutContent {
   @apply mx-[auto] flex max-w-[1900px] min-w-[768px] flex-1
-  flex-col overflow-y-auto px-3;
+  flex-col overflow-y-auto px-3 pl-0;
 }

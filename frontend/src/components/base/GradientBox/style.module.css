@@ -1,0 +1,15 @@
+.gradientBox {
+  --bg-color: theme("colors.primary");
+  --from-color: theme("colors.black/0.4");
+  --to-color: theme("colors.content3");
+  @apply relative w-full bg-[var(--bg-color)];
+}
+
+.gradientBox::before {
+  @apply pointer-events-none absolute inset-0 bg-gradient-to-b 
+  from-[var(--from-color)] to-[var(--to-color)] content-[''];
+}
+
+.gradientBox > * {
+  @apply relative;
+}

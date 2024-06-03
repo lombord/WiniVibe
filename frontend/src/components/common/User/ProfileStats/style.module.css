@@ -1,0 +1,12 @@
+.statsBox {
+  @apply flex gap-4;
+}
+
+.statBox {
+  @apply flex-v-center flex-1 gap-0 truncate p-2 leading-6
+  transition active:scale-95;
+}
+
+.statTitle {
+  @apply tip font-normal uppercase tracking-widest text-foreground/80;
+}

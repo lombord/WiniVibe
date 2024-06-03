@@ -30,8 +30,8 @@ export type PublicUser = Pick<User, "id" | "username"> & {
 };
 
 export type ProfileUser = User & {
-  followers_count?: number;
-  following_count?: number;
+  followers_count: number;
+  following_count: number;
   followers?: PublicUser[];
   following?: PublicUser[];
 };
