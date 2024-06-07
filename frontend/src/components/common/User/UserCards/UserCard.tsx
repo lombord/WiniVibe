@@ -1,5 +1,5 @@
-import type { FC } from "react";
-import UserAvatar from "@Common/User/UserAvatar";
+import { type FC, memo } from "react";
+import UserAvatar from "@Common/user/UserAvatar";
 
 import styles from "./style.module.css";
 import { Link } from "react-router-dom";
@@ -19,11 +19,7 @@ const UserCard: FC<UserCardProps> = ({ username, userImage, bgColor }) => {
         className="focus:outline-primary"
       >
         <div className={styles.userCard}>
-          <UserAvatar
-            className="aspect-square h-auto w-full"
-            src={userImage}
-            bgColor={bgColor}
-          />
+          <UserAvatar className="w-full" src={userImage} bgColor={bgColor} />
           <div>
             <p className="h6 truncate">{username}</p>
             <p className="tip">Profile</p>
@@ -34,4 +30,4 @@ const UserCard: FC<UserCardProps> = ({ username, userImage, bgColor }) => {
   );
 };
 
-export default UserCard;
+export default memo(UserCard) as typeof UserCard;

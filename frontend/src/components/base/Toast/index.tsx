@@ -1,3 +1,4 @@
+import { memo } from "react";
 import ToastMessages from "./ToastMessages";
 import { useToastStore } from "@/stores/toastStore";
 
@@ -14,4 +15,4 @@ const Toast = () => {
   );
 };
 
-export default Toast;
+export default memo(Toast);

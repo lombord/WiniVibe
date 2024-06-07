@@ -4,6 +4,7 @@ import {
   useImperativeHandle,
   useRef,
   useCallback,
+  memo,
 } from "react";
 
 // used types
@@ -108,4 +109,4 @@ function Field<T extends WidgetKeys = "input">({
   );
 }
 
-export default Field;
+export default memo(Field) as typeof Field;

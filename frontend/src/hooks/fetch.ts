@@ -33,18 +33,23 @@ export type OffsetQueryProps = {
   endpoint: string;
   limit?: number;
   initialOffset?: number;
+  staleTime?: number;
 };
+
+const DEFAULT_STALE = 60e3;
 
 export function useOffsetQuery<T>({
   queryKey,
   endpoint,
   initialOffset = 0,
   limit,
+  staleTime = DEFAULT_STALE,
 }: OffsetQueryProps) {
   const get = useSessionStore.use.get();
   const query = useInfiniteQuery({
     queryKey: queryKey || [endpoint],
     initialPageParam: initialOffset,
+    staleTime,
     queryFn: async ({ pageParam }) => {
       const response = await get<OffsetPagination<T>>(
         `${endpoint}?offset=${pageParam}` + (limit ? `&limit=${limit}` : ""),
@@ -76,7 +81,10 @@ export function useFetchProfile() {
   const get = useSessionStore.use.get();
   return useQuery({
     queryKey: [`fetchProfile:${username}`],
+    refetchOnWindowFocus: true,
+    staleTime: 60e3,
     queryFn: async () => {
+      await wait(2000);
       try {
         const response = await get<ProfileUser>(
           `/users/${username}/?followers_limit=10&following_limit=10`,

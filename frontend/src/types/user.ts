@@ -1,7 +1,7 @@
 // User related types
 
 import type { CompressedImage } from "./common";
-import { OffsetPagination } from "./fetch";
+import { OffsetPagination, PagesPossible } from "./fetch";
 
 export interface UserProfile {
   photo: CompressedImage;
@@ -37,3 +37,5 @@ export type ProfileUser = User & {
 };
 
 export type OffsetUsers = OffsetPagination<PublicUser>;
+
+export type UsersPagePossible = PagesPossible<PublicUser>;

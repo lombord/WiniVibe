@@ -22,7 +22,6 @@ const ProfileLazy = lazy(async () => {
 
 const ProfileUsers = lazy(() => import("@/pages/touch/user/ProfileUsers"));
 
-
 // Suspended components //
 export const ProfileLayout = (
   <Suspense fallback={<ProfileLayoutSkeleton />}>
@@ -36,16 +35,15 @@ export const ProfilePage = (
   </Suspense>
 );
 
-
 export const FollowersPage = (
   <Suspense fallback={<ProfileUsersSkeleton title="Followers" />}>
-    <ProfileUsers title="Followers" subPath="followers" />
+    <ProfileUsers title="Followers" subPath="followers/" />
   </Suspense>
 );
 
 export const FollowingPage = (
   <Suspense fallback={<ProfileUsersSkeleton title="Following" />}>
-    <ProfileUsers title="Following" subPath="following" />
+    <ProfileUsers title="Following" subPath="following/" />
   </Suspense>
 );
 

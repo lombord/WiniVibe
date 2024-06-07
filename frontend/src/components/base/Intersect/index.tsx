@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC, memo } from "react";
 import type { IntersectProps } from "./types";
 
 import { useIntersection } from "@/hooks/other";
@@ -37,4 +37,4 @@ const Intersect: FC<IntersectProps> = ({
   );
 };
 
-export default Intersect;
+export default memo(Intersect) as typeof Intersect;

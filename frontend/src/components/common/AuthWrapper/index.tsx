@@ -1,5 +1,5 @@
 import { Link } from "@nextui-org/react";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 interface WrapperProps {
   isLogin?: boolean;

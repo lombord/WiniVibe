@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from "react";
+import { memo, useMemo, type ReactNode } from "react";
 import type { OffsetPagination } from "@/types/fetch";
 import type { IntersectProps } from "@Base/Intersect/types";
 
@@ -55,4 +55,4 @@ function OffsetFetch<T>({
   );
 }
 
-export default OffsetFetch;
+export default memo(OffsetFetch) as typeof OffsetFetch;

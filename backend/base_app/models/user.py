@@ -47,6 +47,7 @@ class UserManager(DJUserManager):
             self.get_queryset()
             .select_photo()
             .only("id", "username", "profile", "profile__photo")
+            .order_by("id")
         )
 
     def fetch_profile(self) -> UserQuerySet:
@@ -108,7 +109,7 @@ class UserProfile(models.Model):
 
     header_image = CompImageField(
         path="users/{obj.user_id}/header/",
-        sizes={"large": (1400, 350), "small": 0},
+        sizes={"large": (1550, 350), "medium": (800, 200), "small": 0},
         extract_color=True,
         extract_resize=True,
     )

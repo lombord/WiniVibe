@@ -1,5 +1,7 @@
 .wrapper {
-  @apply bg-before-overlay border border-transparent bg-content1;
+  @apply bg-before-overlay aspect-square h-auto border
+  border-transparent 
+  bg-content1;
   --overlay-color: theme("colors.content3/0.8");
 }
 

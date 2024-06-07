@@ -3,7 +3,6 @@ from io import BytesIO
 from shutil import rmtree
 
 from pathlib import Path
-from time import time
 from PIL import Image, ImageOps
 
 from django.db import models
@@ -17,7 +16,7 @@ from django.template.defaultfilters import filesizeformat
 
 
 from ..fields import ColorField, ImageOneToOneField
-from ..config import DEFAULT_IMG_QUALITY, IMG_EXTENSION, IMG_FORMAT, IMG_MODE
+from ..config import IMG_EXTENSION, IMG_FORMAT, IMG_MODE
 
 from .types import ImageConfig, ImageSizes
 from .utils import dominant_color
@@ -38,7 +37,6 @@ class CompImagePath:
 
 def cleanup_images(sender, instance: "CompressedImage", **kwargs):
     instance.clear_files()
-
 
 
 class CompressedImage(models.Model):
@@ -128,7 +126,7 @@ class CompressedImage(models.Model):
                 if size:
                     img_io = BytesIO()
                     resized = ImageOps.fit(img, size)
-                    resized.save(img_io, IMG_FORMAT, quality=100)
+                    resized.save(img_io, IMG_FORMAT, quality=quality)
                     setattr(self, key, File(img_io, f"{key}{IMG_EXTENSION}"))
 
     def clear_files(self):
@@ -139,8 +137,6 @@ class CompressedImage(models.Model):
             print(e)
 
     def __extract_color(self):
-        start = time()
         self.extracted_color = dominant_color(
             self.extract_image, resize=self.CONFIG["extract_resize"]
         )
-        print("extract time:", time() - start)

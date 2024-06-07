@@ -1,5 +1,5 @@
 import PreviewSection from "@Common/PreviewSection";
-import { UserCards } from "@Common/User/UserCards";
+import { UserCards } from "@Common/user/UserCards";
 import Skeleton from "./Skeleton";
 
 import { useProfileData } from "@/hooks/fetch";

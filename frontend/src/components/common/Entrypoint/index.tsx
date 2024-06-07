@@ -1,6 +1,7 @@
-import { useLoadSession } from "@/hooks/fetch";
+import { Suspense, lazy, memo } from "react";
 import VPSpinner from "@Base/Spinners/VPSpinner";
-import { Suspense, lazy } from "react";
+
+import { useLoadSession } from "@/hooks/fetch";
 
 const Dispatcher = lazy(() => import("./Dispatcher"));
 
@@ -20,4 +21,4 @@ const Entrypoint = () => {
   );
 };
 
-export default Entrypoint;
+export default memo(Entrypoint);

@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 
 import type { ProfileStatProps } from "./type";
 import ProfileStat from "./ProfileStat";
@@ -20,4 +20,4 @@ const ProfileStats: FC<ProfileStatsProps> = ({ stats, className = "" }) => {
   );
 };
 
-export default ProfileStats;
+export default memo(ProfileStats) as typeof ProfileStats;

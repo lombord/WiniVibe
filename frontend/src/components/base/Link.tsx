@@ -10,10 +10,10 @@ import {
 } from "@nextui-org/react";
 import { LinkIcon } from "@nextui-org/shared-icons";
 
-type LinkProps = Omit<NextLinkProps, "href"> & Pick<RouterLinkProps, "to">;
+type LinkProps = NextLinkProps & Pick<RouterLinkProps, "to">;
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ to, ...props }, ref) => {
+  ({ to, href = "", ...props }, ref) => {
     const {
       children,
       showAnchorIcon,
@@ -25,7 +25,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     });
 
     return (
-      <RouterLink {...getLinkProps()} to={to}>
+      <RouterLink {...getLinkProps()} to={to || href}>
         <>
           {children}
           {showAnchorIcon && anchorIcon}

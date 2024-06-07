@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 
 import { ProfileStatProps } from "./type";
 import { Link } from "react-router-dom";
@@ -10,18 +10,12 @@ const ProfileStat: FC<ProfileStatProps> = ({ stat, statKey }) => {
     stat = { title: statKey, count: stat };
   }
 
-  const children = (
-    <>
-      <span className="font-bold">{stat.count || 0}</span>
-      <span className={styles.statTitle}>{stat.title || statKey}</span>
-    </>
-  );
-
   return (
     <Link className={styles.statBox} to={stat.href || ""}>
-      {children}
+      <span className="text-tip font-bold">{stat.count || 0}</span>
+      <span className={styles.statTitle}>{stat.title || statKey}</span>
     </Link>
   );
 };
 
-export default ProfileStat;
+export default memo(ProfileStat) as typeof ProfileStat;

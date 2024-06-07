@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC, memo } from "react";
 import type { SectionProps } from "./types";
 
 import { Link } from "react-router-dom";
@@ -25,4 +25,4 @@ const PreviewSection: FC<SectionProps> = ({ title, href, children }) => {
   );
 };
 
-export default PreviewSection;
+export default memo(PreviewSection) as typeof PreviewSection;

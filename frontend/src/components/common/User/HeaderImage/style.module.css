@@ -3,7 +3,7 @@
   @apply relative;
 }
 
-.wrapper {
+.showOverlay .wrapper {
   @apply bg-before-overlay;
 }
 
@@ -12,7 +12,7 @@
   !max-w-full bg-[var(--bg-color)];
 }
 
-.wrapper::before {
+.showOverlay .wrapper::before {
   @apply z-10;
 }
 

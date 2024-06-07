@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC, memo } from "react";
 import type { NavItemProps } from "./types";
 
 import { NavLink } from "react-router-dom";
@@ -16,7 +16,7 @@ const NavItem: FC<NavItemProps> = ({ label, icon, activeIcon, ...rest }) => {
       {...rest}
     >
       <div className="flex-v-base items-center gap-1">
-        <div className="leading-3">
+        <div className={styles.iconBox}>
           <span className={`${styles.defIcon}`}>{icon}</span>
           <span className={`${styles.activeIcon}`}>{activeIcon}</span>
         </div>
@@ -26,4 +26,4 @@ const NavItem: FC<NavItemProps> = ({ label, icon, activeIcon, ...rest }) => {
   );
 };
 
-export default NavItem;
+export default memo(NavItem) as typeof NavItem;

@@ -1,5 +1,13 @@
 .userCards {
-  @apply gap-4;
+  --min-col: 160px;
+  --gap: 0.5rem;
+  /* @apply gap-2; */
+}
+
+@media (min-width: theme("screens.lg")) {
+  .userCards {
+    --min-col: 200px;
+  }
 }
 
 .userCard {

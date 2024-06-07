@@ -1,39 +1,50 @@
-import HeaderImage from "@Common/User/HeaderImage";
+import { memo } from "react";
+
 import { Outlet } from "react-router-dom";
 import ProfileWrapper from "@/pages/common/user/ProfileWrapper";
 import GradientBox from "@Base/GradientBox";
 
 import styles from "./style.module.css";
-import UserAvatar from "@Common/User/UserAvatar";
-import ProfileStats from "@Common/User/ProfileStats";
+import UserAvatar from "@Common/user/UserAvatar";
+import ProfileStats from "@Common/user/ProfileStats";
+import HeaderImage from "@Common/user/HeaderImage";
+import Skeleton from "./Skeleton";
 
 const ProfileLayout = () => {
   return (
-    <ProfileWrapper fallback={<p>Loading...</p>}>
+    <ProfileWrapper fallback={<Skeleton />}>
       {({ user, profile, profileColor }) => (
         <div className="relative z-10 h-full">
           <GradientBox
-            className={styles.profileHeader}
-            bgColor={profile.photo.color || profileColor}
+            className={`${styles.profileHeaderBase} ${styles.profileHeader}`}
+            bgColor={profileColor}
           >
-            <div className="centered-flex flex-col gap-2">
-              <UserAvatar
-                className="aspect-square h-auto w-[150px]"
-                src={profile.photo.medium}
-                bgColor={profile.photo.color}
+            <HeaderImage
+              src={profile.header_image.medium}
+              showOverlay={false}
+              bgColor="none"
+            >
+              <div className={styles.avatarBox}>
+                <UserAvatar
+                  className={styles.profileAvatar}
+                  src={profile.photo.medium}
+                  bgColor={profile.photo.color}
+                />
+              </div>
+            </HeaderImage>
+            <div className={styles.profileInfoBox}>
+              <h1 className="text-center h2">{user.username}</h1>
+              <ProfileStats
+                className={styles.profileStatsBox}
+                stats={{
+                  followers: { count: user.followers_count, href: "followers" },
+                  following: { count: user.following_count, href: "following" },
+                  playlists: 50,
+                }}
               />
-              <h1 className="md:h2">{user.username}</h1>
             </div>
-            <ProfileStats
-              className="mt-4"
-              stats={{
-                followers: { count: user.followers_count, href: "followers" },
-                following: { count: user.following_count, href: "following" },
-                playlists: 50,
-              }}
-            />
           </GradientBox>
-          <div>
+          <div className={styles.profileContent}>
             <Outlet />
           </div>
         </div>
@@ -42,4 +53,4 @@ const ProfileLayout = () => {
   );
 };
 
-export default ProfileLayout;
+export default memo(ProfileLayout);

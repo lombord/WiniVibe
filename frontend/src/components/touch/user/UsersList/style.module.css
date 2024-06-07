@@ -1,0 +1,13 @@
+.usersList {
+  @apply flex-v-base gap-0.5;
+}
+
+.userItem {
+  @apply flex-h-base 
+  rounded-2xl bg-content2 
+  p-1 transition active:scale-95;
+}
+
+.userItemAvatar {
+  @apply w-[60px];
+}

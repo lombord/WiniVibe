@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { memo, type FC } from "react";
 import type { CommonMsgProps, ToastItems } from "./types";
 
 import ToastMessage from "./ToastMessage";
@@ -35,4 +35,4 @@ const ToastMessages: FC<ToastMessagesProps> = ({ messages, ...restProps }) => {
   );
 };
 
-export default ToastMessages;
+export default memo(ToastMessages) as typeof ToastMessages;

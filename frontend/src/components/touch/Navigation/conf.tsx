@@ -1,7 +1,7 @@
 import { NavItemsProps } from "./types";
 import { Home, MusicLibrary2, SearchNormal1, IconProps } from "iconsax-react";
 
-const iconCommon: IconProps = { size: "30" };
+const iconCommon: IconProps = { size: "1em" };
 const activeIconCommon: IconProps = { ...iconCommon, variant: "Bold" };
 
 export const navItems: NavItemsProps["items"] = [

@@ -1,6 +1,6 @@
-import type { PublicUser } from "@/types/user";
+import { UsersPagePossible } from "@/types/user";
 
 export interface UserCardsProps {
-  users: PublicUser[];
+  users: UsersPagePossible;
   isHorizontal?: boolean;
 }

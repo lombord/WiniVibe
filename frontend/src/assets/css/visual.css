@@ -27,4 +27,16 @@
     @apply absolute inset-0 -z-10 h-full w-full bg-gradient-to-b 
     from-transparent to-[var(--overlay-color)] content-[''];
   }
+
+  .skeleton-content1 {
+    @apply relative z-10 after:!bg-content1;
+  }
+
+  .skeleton-content2 {
+    @apply relative z-10 after:!bg-content2;
+  }
+
+  .skeleton-content3 {
+    @apply relative z-10 after:!bg-content3;
+  }
 }

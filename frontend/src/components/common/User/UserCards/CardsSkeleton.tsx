@@ -1,6 +1,8 @@
 import { Skeleton } from "@nextui-org/react";
 import DynamicGrid from "@Base/Layout/DynamicGrid";
-import type { FC } from "react";
+import { type FC, memo } from "react";
+
+import styles from "./style.module.css";
 
 interface SkeletonProps {
   count?: number;
@@ -12,7 +14,7 @@ const CardsSkeleton: FC<SkeletonProps> = ({
   isHorizontal = false,
 }) => {
   return (
-    <DynamicGrid minCol="200px" gap="0.5rem" isHorizontal={isHorizontal}>
+    <DynamicGrid className={styles.userCards} isHorizontal={isHorizontal}>
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
@@ -30,4 +32,4 @@ const CardsSkeleton: FC<SkeletonProps> = ({
   );
 };
 
-export default CardsSkeleton;
+export default memo(CardsSkeleton) as typeof CardsSkeleton;

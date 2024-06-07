@@ -1,9 +1,17 @@
-import React from 'react'
+import UserListSkeleton from "@Touch/user/UsersList/UserListSkeleton";
+import { Skeleton } from "@nextui-org/react";
 
-const Skeleton = () => {
+const ProfileSkeleton = () => {
   return (
-    <div>Skeleton</div>
-  )
-}
+    <div>
+      {Array.from({ length: 2 }).map((_, i) => (
+        <div key={i}>
+          <Skeleton className="skeleton-content2 my-2.5 block h-3.5 w-20 rounded-full" />
+          <UserListSkeleton />
+        </div>
+      ))}
+    </div>
+  );
+};
 
-export default Skeleton
+export default ProfileSkeleton;

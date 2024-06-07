@@ -1,9 +1,9 @@
 .layoutBox {
-  @apply h-screen overflow-y-auto overflow-x-hidden;
+  @apply h-screen overflow-y-auto overflow-x-hidden bg-content3;
 }
 
 .layoutContent {
-  @apply h-full pb-20;
+  @apply relative pb-20;
 }
 
 .navbar {

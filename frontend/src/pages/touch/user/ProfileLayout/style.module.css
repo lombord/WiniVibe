@@ -1,5 +1,32 @@
+.profileHeaderBase {
+  --from-color: transparent !important;
+  --to-color: theme("colors.content3") !important;
+  --avatar-size: 112px;
+  /* @apply ; */
+}
+
 .profileHeader {
-  --from-color: transparent;
-  --to-color: theme("colors.content2");
-  @apply !-z-10 pt-10 pb-2;
+  @apply !-z-10;
+}
+
+.avatarBox {
+  @apply relative;
+  padding-bottom: max(100px, min(30%, 180px));
+}
+
+.profileAvatar {
+  @apply absolute bottom-0 left-[50%] 
+  w-[var(--avatar-size)] translate-x-[-50%] translate-y-[50%];
+}
+
+.profileInfoBox {
+  margin-top: calc(var(--avatar-size) / 2 + 0.2rem);
+}
+
+.profileStatsBox {
+  /* @apply mt; */
+}
+
+.profileContent {
+  @apply px-2 pb-2;
 }

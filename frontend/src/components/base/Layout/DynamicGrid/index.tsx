@@ -1,4 +1,4 @@
-import type { FC, HTMLProps, CSSProperties } from "react";
+import { type FC, type HTMLProps, type CSSProperties, memo } from "react";
 
 import styles from "./style.module.css";
 
@@ -33,7 +33,7 @@ const DynamicGrid: FC<DynamicGridProps> = ({
   colGap,
   rowGap,
   isHorizontal = false,
-  className,
+  className = "",
   ...restProps
 }) => {
   if (isHorizontal) {
@@ -44,7 +44,7 @@ const DynamicGrid: FC<DynamicGridProps> = ({
 
   return (
     <div
-      className={`dynamic-grid ${isHorizontal ? styles.horizontalGrid : ""} ${className ? className : ""}`}
+      className={`dynamic-grid ${isHorizontal ? styles.horizontalGrid : ""} ${className}`}
       style={
         {
           "--min-col": minCol,
@@ -65,4 +65,4 @@ const DynamicGrid: FC<DynamicGridProps> = ({
   );
 };
 
-export default DynamicGrid;
+export default memo(DynamicGrid) as typeof DynamicGrid;

@@ -1,4 +1,4 @@
-import { type Ref, useImperativeHandle, useRef } from "react";
+import { type Ref, useImperativeHandle, useRef, memo } from "react";
 
 // used types
 import type {
@@ -71,4 +71,4 @@ function Fields<F extends Fields>({
   );
 }
 
-export default Fields;
+export default memo(Fields) as typeof Fields;

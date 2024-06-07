@@ -1,15 +1,15 @@
-import { UserCardPages, CardsSkeleton } from "@Common/User/UserCards";
+import { UserCards, CardsSkeleton } from "@Common/user/UserCards";
 import OffsetFetch from "@Base/OffsetFetch/index";
 import type { PublicUser } from "@/types/user";
 import { useProfileData } from "@/hooks/fetch";
-import type { FC } from "react";
+import { type FC, memo } from "react";
 
 interface ProfileUsersProps {
   title: string;
   subPath: string;
 }
 
-export const Component: FC<ProfileUsersProps> = ({ title, subPath }) => {
+export const ProfileUsers: FC<ProfileUsersProps> = ({ title, subPath }) => {
   const user = useProfileData();
 
   const fallback = <CardsSkeleton count={25} />;
@@ -22,7 +22,7 @@ export const Component: FC<ProfileUsersProps> = ({ title, subPath }) => {
           endpoint={`users/${user.username}/${subPath}`}
           fallback={fallback}
         >
-          {(pages) => <UserCardPages pages={pages} />}
+          {(pages) => <UserCards users={pages} />}
         </OffsetFetch>
       ) : (
         fallback
@@ -31,4 +31,4 @@ export const Component: FC<ProfileUsersProps> = ({ title, subPath }) => {
   );
 };
 
-export default Component;
+export default memo(ProfileUsers) as typeof ProfileUsers;

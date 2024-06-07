@@ -6,18 +6,20 @@ import styles from "./style.module.css";
 interface HeaderImageProps extends ImageProps {
   children?: React.ReactNode;
   bgColor?: string;
+  showOverlay?: boolean;
 }
 
 const HeaderImage: React.FC<HeaderImageProps> = ({
   classNames,
   alt = "user header image",
+  showOverlay = true,
   bgColor,
   children,
   ...props
 }) => {
   return (
     <div
-      className={styles.headerBox}
+      className={`${styles.headerBox} ${showOverlay ? styles.showOverlay : ""}`}
       style={{ "--bg-color": bgColor } as React.CSSProperties}
     >
       <div className={styles.wrapper}>

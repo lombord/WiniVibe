@@ -12,6 +12,12 @@
     @apply font-main font-medium text-foreground;
   }
 
+  *:focus,
+  *::before:focus,
+  *::after:focus {
+    outline: red !important;
+  }
+
   body {
     @apply bg-content2;
   }
@@ -97,12 +103,17 @@
   div,
   li,
   ul p,
-  input {
+  input,
+  a {
     @apply text-base font-medium md:text-medium lg:text-lg;
   }
 
   .text-tip {
     @apply text-sm font-normal md:text-base;
+  }
+
+  .text-tip-xs {
+    @apply text-xs font-normal md:text-sm;
   }
 
   .tip {
@@ -115,10 +126,6 @@
 
   .label {
     @apply text-sm font-medium md:text-base;
-  }
-
-  a {
-    @apply text-lg;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

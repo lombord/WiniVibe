@@ -11,5 +11,5 @@
 }
 
 .gradientBox > * {
-  @apply relative;
+  @apply relative z-10;
 }

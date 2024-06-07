@@ -36,13 +36,13 @@ export const ProfilePage = (
 
 export const FollowersPage = (
   <Suspense fallback={<ProfileUsersSkeleton title="Followers" />}>
-    <ProfileUsers title="Followers" subPath="followers" />
+    <ProfileUsers title="Followers" subPath="followers/" />
   </Suspense>
 );
 
 export const FollowingPage = (
   <Suspense fallback={<ProfileUsersSkeleton title="Following" />}>
-    <ProfileUsers title="Following" subPath="following" />
+    <ProfileUsers title="Following" subPath="following/" />
   </Suspense>
 );
 

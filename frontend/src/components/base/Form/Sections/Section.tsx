@@ -5,6 +5,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  memo,
 } from "react";
 
 // used types
@@ -156,4 +157,4 @@ function Section<F extends FieldsMap, N extends SectionsMap>({
   );
 }
 
-export default Section;
+export default memo(Section) as typeof Section;

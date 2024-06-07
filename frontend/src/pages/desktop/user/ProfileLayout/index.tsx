@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
-import HeaderImage from "@Common/User/HeaderImage";
-import UserAvatar from "@Common/User/UserAvatar";
+import HeaderImage from "@Common/user/HeaderImage";
+import UserAvatar from "@Common/user/UserAvatar";
 import LayoutSkeleton from "./Skeleton";
 import GradientBox from "@Base/GradientBox";
 import ProfileWrapper from "@/pages/common/user/ProfileWrapper";

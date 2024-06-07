@@ -37,21 +37,23 @@ def rgb2hex(rgb: Union[RGB, tuple[RGB]]) -> Union[str, tuple[str]]:
     return "#{:02x}{:02x}{:02x}".format(*map(rgbClamp, rgb))
 
 
-def hue_weight(hue: float) -> float:
+def hue_weight(hue: float, sv_weight: float) -> float:
     """Calculates hue weight of hsv or hsl colors
 
     Args:
         hue (float): _hue_
+        sv_weight (float): _saturation and value weight_
 
     Returns:
         float: _Calculated weight_
     """
-    if hue <= 5:
-        return 0.7
-    elif hue < 60:
-        return 0.6
+
+    if 10 < hue < 60:
+        return ((60 - hue) / 60) * 0.4 + sv_weight * 0.3
+    elif hue <= 10 or 210 < hue <= 240 or 330 < hue <= 360:
+        return 0.6 + sv_weight * 0.4
     else:
-        return 1.5
+        return 1
 
 
 def dominant_color(
@@ -59,8 +61,8 @@ def dominant_color(
     resize: bool = True,
     palette_size: int = 128,
     img_size=100,
-    min_S=0.1,
-    min_V=0.15,
+    min_S=0,
+    min_V=0.2,
 ) -> str:
     """Calculates dominant color from given image(or image path/file name)
 
@@ -100,7 +102,8 @@ def dominant_color(
         if S < min_S or V < min_V:
             continue
         # calculate color priority using: color_count * saturation * brightness * hue_weight
-        priority = (count * 3) * S * V * hue_weight(H * 360)
+        SV = (S or 0.005) * V
+        priority = count * SV * hue_weight(H * 360, SV)
         if priority > max_priority:
             dominant_color = rgb
             max_priority = priority

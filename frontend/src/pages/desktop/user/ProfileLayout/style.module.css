@@ -1,14 +1,16 @@
 .profileBox {
-  --box-x-padding: clamp(1rem, 1vw, 1.5rem);
+  --box-x-padding: clamp(1rem, 1vw, 1.2rem);
   @apply relative z-0 mb-4 overflow-hidden rounded-xl bg-content3;
 }
 
 .headerBox {
-  @apply flex h-[250px] items-end md:h-[300px] lg:h-[350px];
+  @apply relative flex items-end;
+  padding-bottom: max(250px, min(350px, 33%));
 }
 
 .headerContentBox {
-  @apply flex flex-1 items-center gap-6 px-[var(--box-x-padding)] pb-6;
+  @apply absolute inset-x-0 bottom-0 flex flex-1
+   items-center gap-6 px-[var(--box-x-padding)] pb-6;
 }
 
 .headerInfoBox {
@@ -17,7 +19,7 @@
 
 .profileImage {
   @apply aspect-square h-auto w-[25%] 
-  min-w-[150px] max-w-[230px] shadow-2xl;
+  min-w-[150px] max-w-[250px] shadow-2xl;
 }
 
 .profileGradient {

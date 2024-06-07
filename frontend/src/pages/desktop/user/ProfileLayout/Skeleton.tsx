@@ -7,9 +7,7 @@ const LayoutSkeleton = () => {
     <div className={`${styles.profileBox} min-h-[800px]`}>
       <div className={`${styles.headerBox} bg-content1`}>
         <div className={styles.headerContentBox}>
-          <Skeleton
-            className={`${styles.profileImage} rounded-full bg-content2`}
-          />
+          <Skeleton className={`${styles.profileImage} rounded-full`} />
           <div className="flex flex-col gap-6">
             <Skeleton className="mt-4 h-5 w-24 rounded-full" />
             <Skeleton className="h-20 w-96 rounded-3xl" />

@@ -1,4 +1,4 @@
-import { Ref, useImperativeHandle, useRef } from "react";
+import { Ref, memo, useImperativeHandle, useRef } from "react";
 // used types
 import type {
   SectionsProps,
@@ -72,4 +72,4 @@ function Sections<S extends SectionsMap>({
   );
 }
 
-export default Sections;
+export default memo(Sections) as typeof Sections;

@@ -1,4 +1,4 @@
-import CardsSkeleton from "@/components/common/User/UserCards/CardsSkeleton";
+import CardsSkeleton from "@Common/user/UserCards/CardsSkeleton";
 
 const Skeleton = ({ title }: { title: string }) => {
   return (

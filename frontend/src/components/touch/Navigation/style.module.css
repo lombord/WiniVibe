@@ -1,11 +1,11 @@
 .navItems {
-  --bg-color: theme(colors.content3/0.8) !important;
+  --bg-color: theme(colors.content2/0.8) !important;
   @apply bg-before-blur flex;
 }
 
 .navItem {
   @apply centered-flex flex-1 py-2.5
-  text-foreground-600 transition;
+  text-foreground-700 transition;
 }
 
 .navItem:active {
@@ -14,6 +14,10 @@
 
 .activeItem {
   @apply text-foreground-800;
+}
+
+.iconBox {
+  @apply text-2xl leading-3;
 }
 
 .activeItem .defIcon {

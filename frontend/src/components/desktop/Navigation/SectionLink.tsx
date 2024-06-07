@@ -3,7 +3,7 @@ import type { SectionLinkProps } from "./types";
 import styles from "./style.module.css";
 import { motion } from "framer-motion";
 import { Tooltip } from "@nextui-org/react";
-import { FC } from "react";
+import { type FC, memo } from "react";
 
 const SectionLink: FC<SectionLinkProps> = ({ label, icon, ...rest }) => {
   return (
@@ -36,4 +36,4 @@ const SectionLink: FC<SectionLinkProps> = ({ label, icon, ...rest }) => {
   );
 };
 
-export default SectionLink;
+export default memo(SectionLink) as typeof SectionLink;

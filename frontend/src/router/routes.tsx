@@ -17,10 +17,11 @@ import {
 
 import { guestLoader, profileLoader, sessionLoader } from "./loaders";
 import useDeviceStore from "@/stores/deviceStore";
+import { Fragment } from "react";
 
 const isTouch = useDeviceStore.getState().isTouch();
 
-var { AppLayout, ProfileLayout, ProfilePage, FollowersPage, FollowingPage } =
+const { AppLayout, ProfileLayout, ProfilePage, FollowersPage, FollowingPage } =
   isTouch ? await import("./touchComps") : await import("./desktopComps");
 
 const routes = createRoutesFromElements(
@@ -31,8 +32,15 @@ const routes = createRoutesFromElements(
       <Route path="/playlists" Component={PlaylistsPage} />
       <Route path="/user/:username" element={ProfileLayout}>
         <Route index element={ProfilePage} />
-        <Route path="followers" element={FollowersPage} />
-        <Route path="following" element={FollowingPage} />
+        <Route
+          path="followers"
+          element={<Fragment key="followers">{FollowersPage}</Fragment>}
+        />
+        <Route
+          key="following"
+          path="following"
+          element={<Fragment key="following">{FollowingPage}</Fragment>}
+        />
       </Route>
     </Route>
     <Route path="/auth" loader={guestLoader} Component={AuthLayout}>
@@ -45,7 +53,7 @@ const routes = createRoutesFromElements(
     </Route>
     <Route path="/logout" Component={LogoutPage} loader={sessionLoader} />
     <Route path="*" Component={NotFoundPage} />
-  </Route>
+  </Route>,
 );
 
 export default routes;
