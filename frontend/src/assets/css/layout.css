@@ -41,4 +41,8 @@
     grid-auto-rows: var(--auto-rows, initial);
     grid-auto-columns: var(--auto-cols, initial);
   }
+
+  .absolute-full {
+    @apply absolute inset-0 z-10;
+  }
 }

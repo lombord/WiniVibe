@@ -11,20 +11,17 @@ const ProfilePage = () => {
 
   return (
     <>
-      <PreviewSection title="Followers" href={"followers"}>
-        {user.followers ? (
+      {user.followers && (
+        <PreviewSection title="Followers" href={"followers"}>
           <UserCards isHorizontal users={user.followers} />
-        ) : (
-          <p>Empty</p>
-        )}
-      </PreviewSection>
-      <PreviewSection title="Following" href={"following"}>
-        {user.following ? (
+        </PreviewSection>
+      )}
+
+      {user.following && (
+        <PreviewSection title="Following" href={"following"}>
           <UserCards isHorizontal users={user.following} />
-        ) : (
-          <p>Empty</p>
-        )}
-      </PreviewSection>
+        </PreviewSection>
+      )}
     </>
   );
 };

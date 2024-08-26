@@ -53,7 +53,7 @@ const routes = createRoutesFromElements(
     </Route>
     <Route path="/logout" Component={LogoutPage} loader={sessionLoader} />
     <Route path="*" Component={NotFoundPage} />
-  </Route>,
+  </Route>
 );
 
 export default routes;

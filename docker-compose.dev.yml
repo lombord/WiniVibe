@@ -1,0 +1,157 @@
+version: "3.9"
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "4566:4566" # LocalStack Gateway
+      - "4510-4559:4510-4559" # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+    volumes:
+      - "./scripts/dev/aws:/etc/localstack/init/ready.d"
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - media-api-net
+      - base-api-net
+
+  redis:
+    image: redis
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      media-api-net:
+        aliases:
+          - ${REDIS_HOST}
+      base-api-net:
+        aliases:
+          - ${REDIS_HOST}
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    expose:
+      - ${DB_PORT}
+    networks:
+      base-api-net:
+        aliases:
+          - ${DB_HOST}
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
+      interval: 1m30s
+      start_interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  django-celery-worker:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+      target: dev
+    entrypoint: ["sh", "./scripts/start-dev-celery.sh"]
+    init: true
+    volumes:
+      - ./backend/app:/app
+    networks:
+      - base-api-net
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  django-api:
+    build:
+      context: ./backend
+      target: dev
+    init: true
+    ports:
+      - "${DJANGO_PORT}:${DJANGO_PORT}"
+    volumes:
+      - ./backend/app:/app
+    networks:
+      base-api-net:
+        aliases:
+          - ${DJANGO_HOST}
+      public-net:
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      django-celery-worker:
+        condition: service_started
+
+  media-api:
+    build:
+      context: ./media_api
+      target: dev
+    init: true
+    ports:
+      - "${MEDIA_PORT}:${MEDIA_PORT}"
+    volumes:
+      - ./media_api/app:/app/src
+    networks:
+      media-api-net:
+        aliases:
+          - ${MEDIA_HOST}
+      public-net:
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  webserver:
+    build:
+      context: ./frontend
+      target: dev
+    init: true
+    tty: true
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    volumes:
+      - ./frontend:/usr/src/app
+      - node-modules:/usr/src/app/node_modules
+    networks:
+      - public-net
+    environment:
+      - WEB_PORT=${WEB_PORT}
+      - WEB_HOST=0.0.0.0
+      - DJANGO_HOST=${DJANGO_HOST}
+      - DJANGO_PORT=${DJANGO_PORT}
+      - MEDIA_HOST=${MEDIA_HOST}
+      - MEDIA_PORT=${MEDIA_PORT}
+      - VITE_API_CSRF_COOKIE_KEY=${API_CSRF_COOKIE_KEY}
+      - VITE_API_CSRF_HEADER_NAME=${API_CSRF_HEADER_NAME}
+    restart: unless-stopped
+    depends_on:
+      - django-api
+      - media-api
+
+volumes:
+  pgdata:
+  node-modules:
+
+networks:
+  base-api-net:
+  media-api-net:
+  public-net:

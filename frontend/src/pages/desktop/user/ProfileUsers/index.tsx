@@ -1,5 +1,5 @@
 import { UserCards, CardsSkeleton } from "@Common/user/UserCards";
-import OffsetFetch from "@Base/OffsetFetch/index";
+import OffsetFetch from "@Base/fetch/OffsetFetch";
 import type { PublicUser } from "@/types/user";
 import { useProfileData } from "@/hooks/fetch";
 import { type FC, memo } from "react";

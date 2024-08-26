@@ -1,6 +1,6 @@
 import { FC } from "react";
 import type { SectionProps } from "./types";
-import { keyToLabel } from "@/utils/common";
+import { keyToLabel } from "@/utils/text";
 import SectionLink from "./SectionLink";
 import SectionBlock from "./SectionBlock";
 import { motion } from "framer-motion";

@@ -1,7 +1,8 @@
 import type {
   WidgetPropsType,
   WidgetKeys,
-  WidgetValuesMap,
+  AwaitedWidgetValues,
+  AwaitedWidgetValuesMap,
 } from "../Widgets/types";
 import type { FormBaseRef } from "../types";
 
@@ -11,16 +12,20 @@ export type FieldWidget<T extends WidgetKeys> = {
   props: Omit<WidgetPropsType[T], "value" | "setValue">;
 };
 
-export type FieldValidator<
+export type FieldValidator<T extends AwaitedWidgetValues> = (
+  value: T,
+) => T | never;
+
+export type FieldValidators<
   T extends WidgetKeys,
-  V extends WidgetValuesMap[T] = WidgetValuesMap[T],
-> = (value: V) => V | never;
+  V extends AwaitedWidgetValuesMap[T] = AwaitedWidgetValuesMap[T],
+> = V extends any ? FieldValidator<V>[] : never;
 
 export type WidgetDispatchProps<T extends WidgetKeys> = Partial<
   Omit<FieldWidget<T>["props"], "defaultValue">
 > & {
   widget?: T | FieldWidget<T>;
-  defaultValue?: WidgetValuesMap[T];
+  defaultValue?: AwaitedWidgetValuesMap[T];
   isInvalid?: boolean;
   resetErrors: () => void;
 };
@@ -35,7 +40,9 @@ export type FieldProps<T extends WidgetKeys = "input"> = Pick<
   showLabel?: boolean;
   isRequired?: boolean;
   requiredMessage?: string;
-  validators?: FieldValidator<T>[];
+  fieldId?: string;
+  fieldName?: string;
+  validators?: FieldValidators<T>;
   hints?: string[];
 };
 
@@ -58,16 +65,35 @@ export type PickFields<T extends WidgetKeys> = T extends any
 
 export type Fields = Record<string, PickFields<WidgetKeys>>;
 
+// export type PublicFields = Record<string, PickFields<WidgetKeys> | WidgetKeys>;
+
+export type EmptyFields = {
+  [x: string]: FieldsField<any> & {
+    isRequired: false;
+  };
+};
+
+export type CommonFieldProps = Pick<FieldProps, "showLabel" | "isRequired">;
+
 export type FieldsProps<F extends Fields> = {
   fields: F;
+  commonFieldProps?: CommonFieldProps;
 } & Pick<FieldProps, "idPrefix">;
 
-export type FieldsData<T extends Fields = Fields> = {
+export type BaseFieldsData<T extends Fields = Fields> = {
   [K in keyof T]: T[K] extends FieldsField<infer U>
-    ? T[K] extends { isRequired: false }
-      ? WidgetValuesMap[U] | undefined
-      : WidgetValuesMap[U]
-    : {};
+    ? AwaitedWidgetValuesMap[U]
+    : never;
+};
+
+export type FieldsData<
+  T extends Fields = Fields,
+  FD extends BaseFieldsData<T> = BaseFieldsData<T>,
+  UK extends keyof T & keyof FD = keyof T & keyof FD,
+> = {
+  [K in UK as T[K]["isRequired"] extends false ? never : K]: FD[K];
+} & {
+  [K in UK as T[K]["isRequired"] extends false ? K : never]?: FD[K];
 };
 
 export type FieldsError<F extends Fields> = {
@@ -81,6 +107,9 @@ export type FieldsRef<
   setFieldsError(errors: FieldsError<F>): void;
 };
 
-export type ChildFieldsRef<FD extends FieldsData<Fields>> = {
-  [K in keyof FD]: FieldRef<FD[K]>;
+export type ChildFieldsRef<
+  F extends Fields,
+  FD extends FieldsData<F> = FieldsData<F>,
+> = {
+  [K in keyof F]: K extends keyof FD ? FieldRef<FD[K]> : never;
 };

@@ -15,6 +15,7 @@ type SessionActions = {
   signIn(username: string, password: string): Promise<SessionUser | never>;
   logout(): Promise<void>;
   loadSession(): Promise<boolean>;
+  resetRequestStore(): void;
 };
 
 export type SessionSlice = SessionStates & SessionActions;
@@ -49,10 +50,14 @@ export const createSessionSlice: SessionStateCreator<SessionSlice> = (
     return get().user as SessionUser;
   },
 
+  resetRequestStore() {
+    set(initialStates);
+  },
+
   async logout() {
     if (get().computed.isLoggedIn) {
       await get().post("auth/logout/");
-      set(initialStates);
+      get().resetRequestStore();
     }
   },
 

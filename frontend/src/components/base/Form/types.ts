@@ -8,7 +8,7 @@ import type {
 } from "./Sections/types";
 
 export type FormBaseRef<T> = {
-  validate: () => T | undefined | never;
+  validate: () => Promise<T | undefined | void | never>;
 };
 
 export type FormProps<
@@ -21,8 +21,11 @@ export type FormProps<
   config?: ((data: SD) => Promise<any>) | Omit<AxiosRequestConfig, "data">;
   succeed?: (data: any) => void;
   validated?: (data: SD) => void;
-
+  className?: string;
   structure: SectionProps<F, S>;
 };
+
+export type FormData<S extends Pick<SectionProps, "nested" | "fields">> =
+  SectionData<S["fields"], S["nested"]>;
 
 export { ChildSectionProps as SectionProps };

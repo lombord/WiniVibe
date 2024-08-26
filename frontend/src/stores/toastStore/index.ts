@@ -41,7 +41,7 @@ const store = create<ToastState>()(
 
     _showMessage(message, type = "message") {
       const id = get()._getNewId();
-      const tMessage = typeof message == "string" ? { message } : message;
+      const tMessage = typeof message === "string" ? { message } : message;
       const item = { id, type, duration: DEFAULT_DURATION, ...tMessage };
       set((state) => {
         state.toasts.set(id, item);

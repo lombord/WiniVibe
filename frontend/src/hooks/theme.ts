@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export enum Theme {
   dark = "dark",
@@ -18,7 +18,7 @@ export function useTheme(): ThemeCtxType {
   );
   const htmlElmClass = useRef(document.documentElement.classList);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const [classList, newTheme] = [htmlElmClass.current, theme];
     localStorage.setItem(THEME_KEY, newTheme);
     classList.add(newTheme);
@@ -26,6 +26,6 @@ export function useTheme(): ThemeCtxType {
   }, [theme]);
 
   const toggleTheme = () =>
-    setTheme(theme == Theme.dark ? Theme.light : Theme.dark);
+    setTheme(theme === Theme.dark ? Theme.light : Theme.dark);
   return { theme, toggleTheme };
 }

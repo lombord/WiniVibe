@@ -9,6 +9,7 @@ import {
 } from "react";
 
 // used types
+import type { ValueOf } from "@/types/utils";
 import type {
   NonFieldErrors,
   SectionData,
@@ -34,16 +35,18 @@ import SectionErrorsList from "./SectionErrors";
 // other
 import { SectionError } from "./errors";
 import { callValidator, validateChild } from "../utils";
-import { hasOwn, hasProps, keyToLabel } from "@/utils/common";
+import { hasOwn, hasProps } from "@/utils/common";
+import { keyToLabel } from "@/utils/text";
 
 function Section<F extends FieldsMap, N extends SectionsMap>({
-  showLabel = true,
   label,
+  showLabel = true,
   sectionKey,
   fields,
   validator,
   nested,
   sectionRef,
+  commonFieldProps,
 }: SectionProps<F, N> & {
   fields?: F;
   nested?: N;
@@ -78,9 +81,9 @@ function Section<F extends FieldsMap, N extends SectionsMap>({
     for (const [key, error] of Object.entries(errors)) {
       if (!error) continue;
       if (fields && hasOwn(fields, key)) {
-        fieldErrors[key as keyof FE] = error as FieldError;
+        fieldErrors[key as keyof FE] = error as ValueOf<FE>;
       } else if (nested && hasOwn(nested, key)) {
-        nestedErrors[key as keyof NE] = error as NE[keyof NE];
+        nestedErrors[key as keyof NE] = error as ValueOf<NE>;
       } else {
         nonFieldErrors[key] = error as FieldError;
       }
@@ -102,20 +105,29 @@ function Section<F extends FieldsMap, N extends SectionsMap>({
   useImperativeHandle(
     sectionRef,
     () => ({
-      validate() {
+      async validate() {
         resetErrors();
         let fieldsData, nestedData;
         let data = {} as SD;
         let hasError = false;
+
+        const promises = [];
+
         if (fieldsRef.current) {
-          [hasError, fieldsData] = validateChild(fieldsRef.current.validate);
+          promises.push(validateChild(fieldsRef.current.validate));
         }
 
         if (nestedRef.current) {
-          [hasError, nestedData] = validateChild(
-            nestedRef.current.validate,
-            hasError,
-          );
+          promises.push(validateChild(nestedRef.current.validate));
+        }
+
+        const result = await Promise.all(promises);
+        if (result[0]) {
+          [hasError, fieldsData] = result[0];
+        }
+        if (result[1]) {
+          hasError ||= result[1][0];
+          nestedData = result[1][1];
         }
 
         if (!hasError && (fieldsData || nestedData)) {
@@ -147,12 +159,23 @@ function Section<F extends FieldsMap, N extends SectionsMap>({
     <>
       {fields && (
         <div>
-          {showLabel && label && <h3>{label}</h3>}
+          {showLabel && label && <h3 className="mb-1">{label}</h3>}
           {sectErrors && <SectionErrorsList errors={sectErrors} />}
-          <Fields idPrefix={sectionKey} fields={fields} fieldsRef={fieldsRef} />
+          <Fields
+            commonFieldProps={commonFieldProps}
+            idPrefix={sectionKey}
+            fields={fields}
+            fieldsRef={fieldsRef}
+          />
         </div>
       )}
-      {nested && <Sections sectionsRef={nestedRef} sections={nested} />}
+      {nested && (
+        <Sections
+          inheritedProps={{ commonFieldProps }}
+          sectionsRef={nestedRef}
+          sections={nested}
+        />
+      )}
     </>
   );
 }

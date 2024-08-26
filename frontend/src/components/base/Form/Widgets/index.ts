@@ -1,19 +1,23 @@
 import Input from "./Input";
 import InputEmail from "./InputEmail";
+import InputFile from "./InputFile";
+import InputImage from "./InputImage";
+import InputMask from "./InputMask";
 import InputPassword from "./InputPassword";
+import InputPhone from "./InputPhone";
 import Textarea from "./Textarea";
 
 export const WidgetsMap = {
   input: Input,
+  mask: InputMask,
+  phone: InputPhone,
   email: InputEmail,
-  text: Textarea,
   password: InputPassword,
+  text: Textarea,
+  file: InputFile,
+  image: InputImage,
 };
 
-type Widgets = typeof WidgetsMap;
-
-export function getWidget<T extends keyof Widgets>(key: T): Widgets[T] {
-  return WidgetsMap[key];
-}
+export type Widgets = typeof WidgetsMap;
 
 export default WidgetsMap;

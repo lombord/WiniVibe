@@ -12,11 +12,11 @@
     @apply font-main font-medium text-foreground;
   }
 
-  *:focus,
+  /* *:focus,
   *::before:focus,
   *::after:focus {
     outline: red !important;
-  }
+  } */
 
   body {
     @apply bg-content2;
@@ -137,5 +137,64 @@
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+}
+/* Scroll bar Styles */
+
+/* width */
+* {
+  --thumb-opacity: 0;
+}
+
+*:hover,
+*:active,
+*:focus {
+  --thumb-opacity: 0.2;
+}
+
+*::-webkit-scrollbar {
+  --size: clamp(0.2rem, 0.5vw, 0.3rem);
+
+  width: var(--size);
+  height: var(--size);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+/* Corner */
+::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+/* Thump */
+::-webkit-scrollbar-thumb {
+  @apply rounded-full
+   bg-foreground bg-opacity-[var(--thumb-opacity)];
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-opacity-30;
+}
+
+::-webkit-scrollbar-thumb:active {
+  @apply bg-opacity-40;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  *,
+  ::before,
+  ::after {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.15s ease-in-out;
+  }
+
+  *:is(:hover, :focus, :active),
+  ::before:is(:hover, :focus, :active),
+  ::after:is(:hover, :focus, :active) {
+    scrollbar-color: theme("colors.foreground/0.2") transparent;
   }
 }

@@ -40,12 +40,12 @@ const structure = createSection({
         password_confirm:
           "Passwords don't match! Please ensure confirm password is the same as password",
       });
-    } else if (data.password == data.email) {
+    } else if (data.password === data.email) {
       throw new SectionError<S>({
         password:
           "Password and Email are the same! Please ensure your password differs from your email",
       });
-    } else if (data.password == data.username) {
+    } else if (data.password === data.username) {
       throw new SectionError<S>({
         password:
           "Password and username are the same! Please ensure your password differs from your username",

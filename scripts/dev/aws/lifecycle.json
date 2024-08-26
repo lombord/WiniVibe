@@ -1,0 +1,15 @@
+{
+  "Rules": [
+    {
+      "ID": "Delete unused uploaded files",
+      "Prefix": "unused/",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "unused/"
+      },
+      "Expiration": {
+        "Days": 1
+      }
+    }
+  ]
+}

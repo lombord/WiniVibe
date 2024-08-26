@@ -1,11 +1,11 @@
 .profileBox {
   --box-x-padding: clamp(1rem, 1vw, 1.2rem);
-  @apply relative z-0 mb-4 overflow-hidden rounded-xl bg-content3;
+  @apply relative z-0;
 }
 
 .headerBox {
   @apply relative flex items-end;
-  padding-bottom: max(250px, min(350px, 33%));
+  padding-bottom: max(250px, min(375px, 33%));
 }
 
 .headerContentBox {

@@ -18,6 +18,7 @@ import { callValidator, validateChildren } from "../utils";
 function Sections<S extends SectionsMap>({
   sections,
   sectionsRef,
+  inheritedProps,
   validator,
 }: SectionsProps<S, SectionsData<S>> & {
   sections: S;
@@ -29,9 +30,14 @@ function Sections<S extends SectionsMap>({
   useImperativeHandle(
     sectionsRef,
     () => ({
-      validate() {
+      async validate() {
         let data = {} as SectionsData<S>;
-        let hasError = validateChildren(data, childSections.current, false);
+
+        let hasError = await validateChildren(
+          data,
+          childSections.current as any,
+          false,
+        );
         if (!hasError && validator) {
           [hasError, data] = callValidator(data, validator, hasError);
         }
@@ -56,6 +62,7 @@ function Sections<S extends SectionsMap>({
           <Section
             key={sectionKey as string}
             sectionKey={sectionKey as string}
+            {...inheritedProps}
             {...props}
             sectionRef={(child) => {
               const map = childSections.current;

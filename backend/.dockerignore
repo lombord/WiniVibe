@@ -1,0 +1,6 @@
+**/__pycache__
+**/*.pyc
+app/media/*
+app/.gitignore
+requirements.txt
+Dockerfile

@@ -1,12 +1,8 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, memo, useLayoutEffect, useMemo, useState } from "react";
 
 // used types
 import type { FieldWidget, WidgetDispatchProps } from "./types";
-import type {
-  WidgetKeys,
-  WidgetPropsType,
-  WidgetValuesMap,
-} from "../Widgets/types";
+import type { WidgetKeys, WidgetPropsType } from "../Widgets/types";
 
 // other
 import WidgetsMap from "../Widgets";
@@ -18,20 +14,24 @@ function WidgetDispatch<T extends WidgetKeys>({
   resetErrors,
   ...fieldProps
 }: WidgetDispatchProps<T>) {
-  type V = WidgetValuesMap[T];
-  const [value, setValue] = useState((defaultValue || null) as V);
+  const [value, setValue] = useState(defaultValue);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isInvalid) resetErrors();
   }, [value]);
 
-  if (!widget || typeof widget === "string") {
-    widget = { type: widget || "input", props: {} } as FieldWidget<T>;
-  }
-  const Widget = WidgetsMap[widget.type] as FC<WidgetPropsType[T]>;
+  const widgetObj = useMemo(() => {
+    let _widget = widget;
+    if (!_widget || typeof _widget === "string") {
+      _widget = { type: _widget || "input", props: {} } as FieldWidget<T>;
+    }
+    return _widget;
+  }, []);
+
+  const Widget = WidgetsMap[widgetObj.type] as FC<WidgetPropsType[T]>;
   return (
     <Widget
-      {...(widget.props as object & WidgetPropsType[T])}
+      {...(widgetObj.props as object & WidgetPropsType[T])}
       {...fieldProps}
       value={value}
       isInvalid={isInvalid}
@@ -40,4 +40,4 @@ function WidgetDispatch<T extends WidgetKeys>({
   );
 }
 
-export default WidgetDispatch;
+export default memo(WidgetDispatch) as typeof WidgetDispatch;

@@ -1,7 +1,7 @@
 import { type FC, type ReactNode, memo } from "react";
 
 import styles from "./style.module.css";
-import LinkButton from "@Base/LinkButton";
+import NavButton from "@Base/UI/NavButton";
 
 interface ListPreviewProps {
   title: string;
@@ -28,7 +28,7 @@ const ListPreview: FC<ListPreviewProps> = ({
           {children}
           {hasMore && (
             <div className={styles.showBtnWrap}>
-              <LinkButton
+              <NavButton
                 className={styles.showBtn}
                 href={href}
                 color="primary"
@@ -38,7 +38,7 @@ const ListPreview: FC<ListPreviewProps> = ({
                 variant="flat"
               >
                 Show all
-              </LinkButton>
+              </NavButton>
             </div>
           )}
         </div>

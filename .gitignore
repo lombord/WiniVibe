@@ -1,4 +1,6 @@
-production.notes.txt
-.venv
+**/production.notes.txt
 **/.vscode
 **/.gitignore
+**/.env
+**/.venv
+volume

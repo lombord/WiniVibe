@@ -11,6 +11,7 @@ const REGEX_ERROR =
 const Input: FC<InputProps> = ({
   value,
   setValue,
+  handleValidate,
   maxLength,
   regexPattern,
   regexError = REGEX_ERROR,
@@ -19,8 +20,9 @@ const Input: FC<InputProps> = ({
   ...props
 }) => {
   const handleChange: ChangeEventHandler = useCallback(
-    ({ target: { value } }) => {
-      setValue(keepMaxLength(value, maxLength));
+    ({ target }) => {
+      const newVal = keepMaxLength(target.value, maxLength);
+      setValue(newVal);
     },
     [maxLength, setValue],
   );
@@ -29,9 +31,14 @@ const Input: FC<InputProps> = ({
     widgetRef,
     () => ({
       validate: () => {
+        if (handleValidate) {
+          return handleValidate(value);
+        }
+
         if (value && regexPattern && !regexPattern.test(value)) {
           throw new Error(regexError);
         }
+
         return value;
       },
     }),

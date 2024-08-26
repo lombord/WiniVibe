@@ -13,11 +13,7 @@
 .userCard {
   @apply flex-v-base cursor-pointer rounded-xl
   border border-content1/30 bg-content1 
-  bg-opacity-40 p-3 pt-5 transition;
-}
-
-.userCard:hover {
-  @apply bg-opacity-70;
+  bg-opacity-40 p-3 pt-5 transition hover:bg-opacity-70;
 }
 
 .userCard:focus,

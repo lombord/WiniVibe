@@ -1,5 +1,5 @@
 import { Suspense, lazy, memo } from "react";
-import VPSpinner from "@Base/Spinners/VPSpinner";
+import VPSpinner from "@Base/UI/Spinners/VPSpinner";
 
 import { useLoadSession } from "@/hooks/fetch";
 

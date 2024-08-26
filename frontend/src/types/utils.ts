@@ -1,5 +1,7 @@
 export type ValueOf<T> = T[keyof T];
 
+export type PromiseOrValue<T> = Promise<T> | T;
+
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
   T,
   Exclude<keyof T, Keys>

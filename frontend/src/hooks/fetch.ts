@@ -60,14 +60,14 @@ export function useOffsetQuery<T>({
       if (lastPage.next) {
         const url = new URL(lastPage.next);
         const offset = url.searchParams.get("offset");
-        return typeof offset == "string" ? +offset : offset;
+        return typeof offset === "string" ? +offset : offset;
       }
     },
     getPreviousPageParam: (lastPage) => {
       if (lastPage.previous) {
         const url = new URL(lastPage.previous);
         const offset = url.searchParams.get("offset");
-        return typeof offset == "string" ? +offset : offset;
+        return typeof offset === "string" ? +offset : offset;
       }
     },
   });
@@ -92,7 +92,7 @@ export function useFetchProfile() {
         return response.data;
       } catch (error) {
         if (isAxiosError(error)) {
-          if (error.response?.status == 404) {
+          if (error.response?.status === 404) {
             navigate("/404", { replace: true });
           }
         }

@@ -5,6 +5,7 @@ import {
   useRef,
   useCallback,
   memo,
+  useMemo,
 } from "react";
 
 // used types
@@ -12,7 +13,8 @@ import type {
   WidgetKeys,
   PickWidgetRef,
   WidgetValuesMap,
-  WidgetValues,
+  AwaitedWidgetValuesMap,
+  AwaitedWidgetValues,
 } from "../Widgets/types";
 import type { FieldRef, PickField } from "./types";
 
@@ -21,7 +23,8 @@ import FieldNotes from "./FieldNotes";
 import WidgetDispatch from "./WidgetDispatch";
 
 // other
-import { keyToLabel } from "@/utils/common";
+import { notEmpty } from "@/utils/common";
+import { keyToLabel } from "@/utils/text";
 import { runValidators } from "../utils";
 
 import styles from "./style.module.css";
@@ -36,11 +39,13 @@ function Field<T extends WidgetKeys = "input">({
   validators,
   showLabel = true,
   isRequired = true,
+  fieldId,
+  fieldName,
   requiredMessage = REQUIRED_ERROR_MSG,
   fieldRef,
   ...restProps
 }: PickField<T> & { fieldRef?: Ref<FieldRef<WidgetValuesMap[T]>> }) {
-  type V = WidgetValuesMap[T];
+  type V = AwaitedWidgetValuesMap[T];
 
   const [errors, setErrors] = useState<string[]>();
   const widgetRef = useRef(null) as PickWidgetRef<T>;
@@ -49,15 +54,15 @@ function Field<T extends WidgetKeys = "input">({
   useImperativeHandle(
     fieldRef,
     () => ({
-      validate() {
+      async validate() {
         resetErrors();
         const _errors: string[] = [];
         let value;
         try {
-          value = widgetRef.current?.validate();
-          if (typeof value === "boolean" || value) {
+          value = await Promise.resolve(widgetRef.current?.validate());
+          if (notEmpty(value)) {
             if (validators) {
-              value = runValidators<WidgetValues>(value, validators, _errors);
+              value = runValidators<AwaitedWidgetValues>(value, validators, _errors);
             }
           } else if (isRequired) {
             _errors.push(requiredMessage);
@@ -80,12 +85,12 @@ function Field<T extends WidgetKeys = "input">({
     [],
   );
 
-  const fieldId = `${idPrefix}${fieldKey}Id`;
-  const fieldName = `${idPrefix}${fieldKey}`;
-
-  if (showLabel) {
-    label = label || keyToLabel(fieldKey);
-  }
+  fieldName = useMemo(() => `${idPrefix}${fieldName || fieldKey}`, []);
+  fieldId = useMemo(
+    () => `${idPrefix}${fieldId || fieldName || fieldKey}Id`,
+    [],
+  );
+  label = useMemo(() => label || keyToLabel(fieldKey), []);
 
   return (
     <div className="flex-v-base gap-1">

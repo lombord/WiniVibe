@@ -1,0 +1,17 @@
+# api packages
+fastapi==0.111
+pydantic-settings==2.3.3
+
+# used for image compression
+pillow==10.3.0
+
+# used for jwt authentication
+PyJWT==2.8.0
+
+# aws sdk
+aioboto3==13.0.1
+types-aioboto3[essential]==13.0.1
+
+
+# for background tasks
+celery[redis]==5.4.0

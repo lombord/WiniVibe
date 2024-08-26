@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import styles from "./style.module.css";
 
 const ProfileStat: FC<ProfileStatProps> = ({ stat, statKey }) => {
-  if (typeof stat == "string" || typeof stat == "number") {
+  if (typeof stat === "string" || typeof stat === "number") {
     stat = { title: statKey, count: stat };
   }
 

@@ -2,10 +2,10 @@ import { memo, type FC } from "react";
 import type { UserCardsProps } from "./types";
 
 import UserCard from "./UserCard";
-import DynamicGrid from "@Base/Layout/DynamicGrid";
+import DynamicGrid from "@Base/layout/DynamicGrid";
 
 import styles from "./style.module.css";
-import ListPages from "@Base/ListPages";
+import ListPages from "@Base/fetch/ListPages";
 
 const UserCards: FC<UserCardsProps> = ({ users, isHorizontal = false }) => {
   return (
@@ -16,7 +16,7 @@ const UserCards: FC<UserCardsProps> = ({ users, isHorizontal = false }) => {
             username={user.username}
             key={user.id}
             userImage={user.profile.photo.medium}
-            bgColor={user.profile.photo.color}
+            bgColor={user.profile.photo.extracted_color}
           />
         )}
       </ListPages>

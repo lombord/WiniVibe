@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { Outlet } from "react-router-dom";
 import ProfileWrapper from "@/pages/common/user/ProfileWrapper";
-import GradientBox from "@Base/GradientBox";
+import GradientBox from "@Base/UI/GradientBox";
 
 import styles from "./style.module.css";
 import UserAvatar from "@Common/user/UserAvatar";
@@ -28,7 +28,7 @@ const ProfileLayout = () => {
                 <UserAvatar
                   className={styles.profileAvatar}
                   src={profile.photo.medium}
-                  bgColor={profile.photo.color}
+                  bgColor={profile.photo.extracted_color}
                 />
               </div>
             </HeaderImage>

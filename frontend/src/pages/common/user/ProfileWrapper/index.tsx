@@ -20,7 +20,8 @@ const ProfileWrapper: FC<WrapperProps> = ({ fallback, children }) => {
 
   const { profile } = user;
 
-  const profileColor = profile.header_image.color || profile.photo.color;
+  const profileColor =
+    profile.header_image.extracted_color || profile.photo.extracted_color;
 
   return children({ user, profile, profileColor });
 };

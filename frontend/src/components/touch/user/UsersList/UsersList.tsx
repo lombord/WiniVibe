@@ -1,4 +1,4 @@
-import ListPages from "@/components/base/ListPages";
+import ListPages from "@Base/fetch/ListPages";
 import { UsersPagePossible } from "@/types/user";
 import { type FC } from "react";
 import UserItem from "./UserItem";
@@ -17,7 +17,7 @@ const UsersList: FC<UsersListProps> = ({ users }) => {
           <UserItem
             key={user.id}
             username={user.username}
-            bgColor={user.profile.photo.color}
+            bgColor={user.profile.photo.extracted_color}
             userImage={user.profile.photo.small}
           />
         )}

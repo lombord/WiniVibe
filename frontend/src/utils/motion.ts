@@ -9,7 +9,7 @@ function reverseVariant(variant: Variant) {
         val = (val as number[]).slice().reverse();
       }
       return [key, val];
-    })
+    }),
   );
 }
 
@@ -34,10 +34,10 @@ export function getToggleVars({
 
 export function invertCopy<T extends Variant, K extends keyof T>(
   variant: T,
-  props: Iterable<K> | string
+  props: Iterable<K> | string,
 ): T {
   const propsSet = new Set(
-    typeof props == "string" ? (props.split(/\s*,\s*/) as Iterable<K>) : props
+    typeof props === "string" ? (props.split(/\s*,\s*/) as Iterable<K>) : props,
   );
   const result = {} as T;
   let key, val;

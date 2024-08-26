@@ -3,9 +3,9 @@ import { Outlet } from "react-router-dom";
 import HeaderImage from "@Common/user/HeaderImage";
 import UserAvatar from "@Common/user/UserAvatar";
 import LayoutSkeleton from "./Skeleton";
-import GradientBox from "@Base/GradientBox";
+import GradientBox from "@Base/UI/GradientBox";
 import ProfileWrapper from "@/pages/common/user/ProfileWrapper";
-import Link from "@Base/Link";
+import Link from "@Base/UI/Link";
 
 import styles from "./style.module.css";
 
@@ -18,7 +18,7 @@ export const Component = () => {
             <div className={styles.headerBox}>
               <div className={styles.headerContentBox}>
                 <UserAvatar
-                  bgColor={profile.photo.color}
+                  bgColor={profile.photo.extracted_color}
                   className={styles.profileImage}
                   src={profile.photo.large}
                 />

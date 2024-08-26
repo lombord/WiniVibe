@@ -1,30 +1,67 @@
 import type { SessionStateCreator } from "@/stores/sessionStore";
-import { axiosRequest } from "@/utils/request";
-import type { Axios } from "axios";
-import axios from "axios";
+import { axiosBase } from "@/utils/request";
+import {
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type Axios,
+  isAxiosError,
+} from "axios";
+
+type CheckTokenPromise = Promise<AxiosResponse<undefined, undefined>>;
 
 export type RequestSlice = Pick<
   Axios,
-  "request" | "get" | "delete" | "options" | "post" | "put" | "patch"
+  "get" | "delete" | "options" | "post" | "put" | "patch"
 > & {
-  _request: typeof axiosRequest;
+  axiosInst: typeof axiosBase;
+  checkPromise: CheckTokenPromise | null;
+  checkToken: () => CheckTokenPromise | never;
+  request<T = any, R = AxiosResponse<T>, D = any>(
+    config: AxiosRequestConfig<D>,
+    reclaimToken?: boolean,
+  ): Promise<R>;
 };
+
+const INVALID_TOKEN_RE = /token/i;
 
 export const createRequestSlice: SessionStateCreator<RequestSlice> = (
   set,
-  get
+  get,
 ) => ({
-  _request: axiosRequest,
+  axiosInst: axiosBase,
+  checkPromise: null,
 
-  async request(config) {
-    const state = get();
+  checkToken() {
+    let prom = get().checkPromise;
+    if (prom) return prom;
+
+    prom = get()
+      .axiosInst.post("auth/check/")
+      .finally(() => {
+        set({ checkPromise: null });
+      });
+    set({ checkPromise: prom });
+    return prom;
+  },
+
+  async request(config, reclaimToken: boolean = true) {
     try {
-      return await state._request(config);
+      return await get().axiosInst(config);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         const detail = error.response?.data?.detail || "";
-        if (detail && typeof detail == "string" && /token/i.test(detail)) {
-          await state.logout();
+        if (
+          reclaimToken &&
+          detail &&
+          typeof detail === "string" &&
+          INVALID_TOKEN_RE.test(detail)
+        ) {
+          try {
+            await get().checkToken();
+            return await get().request(config, false);
+          } catch (error) {
+            get().resetRequestStore();
+          }
         }
       }
       throw error;

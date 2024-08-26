@@ -1,5 +1,5 @@
 import { wait } from "@/utils/request";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 export type IntersectCallback = () => boolean | void | Promise<boolean | void>;
 
@@ -9,7 +9,7 @@ export function useIntersection<T extends HTMLElement>(
 ) {
   const targetRef = useRef<T>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!(targetRef.current && cb)) return;
 
     const target = targetRef.current;

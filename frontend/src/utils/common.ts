@@ -1,26 +1,44 @@
-export function keyToLabel(key: string): string {
-  if (!key) return "";
-  key = key.replace(/([a-z])([A-Z])|[_-]+/g, "$1 $2");
-  return key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
-}
-
-export function hasOwn<T>(target: T, key: string | symbol | number): boolean {
+export function hasOwn<T>(
+  target: T,
+  key: string | symbol | number,
+): key is keyof T {
   return Object.prototype.hasOwnProperty.call(target, key);
 }
 
 export function hasProps<T extends {}>(obj: T): boolean {
-  return !!Object.keys(obj).length;
+  for (const _ in obj) {
+    return true;
+  }
+  return false;
 }
 
-export function randInt(a: number): number;
-export function randInt(a: number, b: number): number;
-export function randInt(a: number, b?: number): number {
-  if (b == null) {
-    b = a;
-    a = 0;
+export function isEmpty<T>(obj: T): boolean {
+  if (obj == null) return true;
+
+  if (Array.isArray(obj)) {
+    return !obj.length;
   }
-  return Math.floor(Math.random() * (b - a) + a);
+
+  const objType = typeof obj;
+
+  if (objType === "object") {
+    return !hasProps(obj);
+  }
+
+  if (objType === "string") {
+    return !obj;
+  }
+
+  return false;
 }
+
+export function notEmpty<T>(
+  obj: T,
+): obj is Exclude<T, undefined | null | void | never | ""> {
+  return !isEmpty<T>(obj);
+}
+
+
 
 export function detectTouch(): boolean {
   let hasTouchScreen = false;
@@ -46,3 +64,4 @@ export function detectTouch(): boolean {
 
   return hasTouchScreen;
 }
+

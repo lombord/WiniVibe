@@ -15,38 +15,44 @@ import Field from "./Field";
 
 // other
 import { validateChildren } from "../utils";
+import { hasOwn } from "@/utils/common";
 
 function Fields<F extends Fields>({
   fields,
   fieldsRef,
+  commonFieldProps,
   ...restProps
 }: FieldsProps<F> & { fields: F; fieldsRef?: Ref<FieldsRef<F>> }) {
-  type FP = FieldsProps<F>;
-  type FD = FieldsData<FP["fields"]>;
-  type CHRef = ChildFieldsRef<FD>;
+  type FD = FieldsData<F>;
+  type CHRef = ChildFieldsRef<F>;
 
   const childrenRef = useRef<Partial<CHRef>>({});
   useImperativeHandle(
     fieldsRef,
     () => ({
-      validate() {
+      async validate() {
         const data = {} as FD;
         const children = childrenRef.current as CHRef;
-        const hasError = validateChildren(data, children, false);
+        const hasError = await validateChildren(data, children, false);
         if (hasError) {
+          console.log("Fields Validation failed");
           throw new Error("Fields validation failed");
         }
         return data;
       },
+
       setFieldsError(errors) {
         const fields = childrenRef.current as CHRef;
         for (const [key, error] of Object.entries(errors)) {
-          error && fields[key].setFieldError(error);
+          if (error && hasOwn(fields, key)) {
+            fields[key].setFieldError(error);
+          }
         }
       },
     }),
     [],
   );
+  
   return (
     <div className="flex-v-base gap-3">
       {(Object.entries(fields) as Entries<typeof fields>).map(
@@ -54,6 +60,7 @@ function Fields<F extends Fields>({
           <Field
             key={fieldKey as string}
             fieldKey={fieldKey as string}
+            {...commonFieldProps}
             {...props}
             {...restProps}
             fieldRef={(child) => {

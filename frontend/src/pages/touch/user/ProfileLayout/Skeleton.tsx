@@ -1,7 +1,7 @@
 import { Skeleton } from "@nextui-org/react";
 import styles from "./style.module.css";
 import { Outlet } from "react-router-dom";
-import GradientBox from "@/components/base/GradientBox";
+import GradientBox from "@Base/UI/GradientBox";
 
 const LayoutSkeleton = () => {
   return (

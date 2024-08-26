@@ -1,24 +1,7 @@
-import { type FC, type HTMLProps, type CSSProperties, memo } from "react";
+import { type FC, type CSSProperties, memo } from "react";
+import type { DynamicGridProps } from "./types";
 
 import styles from "./style.module.css";
-
-type GridProp = string | number;
-
-interface DynamicGridProps extends HTMLProps<HTMLDivElement> {
-  minCol?: GridProp;
-  minRow?: GridProp;
-  maxCol?: GridProp;
-  maxRow?: GridProp;
-  rowCount?: GridProp;
-  colCount?: GridProp;
-  autoCols?: GridProp;
-  autoRows?: GridProp;
-  gap?: GridProp;
-  rowGap?: GridProp;
-  colGap?: GridProp;
-  isHorizontal?: boolean;
-  className?: string;
-}
 
 const DynamicGrid: FC<DynamicGridProps> = ({
   minCol,

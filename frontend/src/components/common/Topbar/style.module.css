@@ -1,5 +1,5 @@
 .topbar {
-  @apply flex-h-base py-4;
+  @apply flex-h-base;
 }
 
 .topbarLeft {

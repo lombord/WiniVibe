@@ -1,5 +1,5 @@
 import { UsersList, UserListSkeleton } from "@Touch/user/UsersList";
-import OffsetFetch from "@Base/OffsetFetch/index";
+import OffsetFetch from "@Base/fetch/OffsetFetch";
 import type { PublicUser } from "@/types/user";
 import { useProfileData } from "@/hooks/fetch";
 import { memo, type FC } from "react";

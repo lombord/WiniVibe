@@ -1,5 +1,5 @@
 import { Skeleton } from "@nextui-org/react";
-import DynamicGrid from "@Base/Layout/DynamicGrid";
+import DynamicGrid from "@Base/layout/DynamicGrid";
 import { type FC, memo } from "react";
 
 import styles from "./style.module.css";

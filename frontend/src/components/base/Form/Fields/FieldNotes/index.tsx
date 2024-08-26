@@ -8,7 +8,7 @@ interface FieldNotesProps {
 }
 
 const FieldNotes: FC<FieldNotesProps> = ({ notes, isError = false }) => {
-  if (typeof notes == "string") notes = [notes];
+  if (typeof notes === "string") notes = [notes];
   return (
     notes && (
       <div

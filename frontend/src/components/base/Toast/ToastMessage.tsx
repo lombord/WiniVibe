@@ -1,4 +1,4 @@
-import { memo, useEffect, useState, type FC } from "react";
+import { memo, useLayoutEffect, useState, type FC } from "react";
 
 import type { CommonMsgProps, ToastItem } from "./types";
 
@@ -21,7 +21,7 @@ const ToastMessage: FC<MessageProps> = ({
 }) => {
   const [timer] = useState(() => new Timer(duration, () => removeMessage(id)));
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     timer.start();
     return () => timer.stop();
   }, []);

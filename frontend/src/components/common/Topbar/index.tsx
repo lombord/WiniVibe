@@ -1,5 +1,5 @@
 import { useSessionStore } from "@/stores/sessionStore";
-import { Avatar, Button, Switch } from "@nextui-org/react";
+import { Button, Switch } from "@nextui-org/react";
 
 import {
   Dropdown,
@@ -19,6 +19,7 @@ import {
 
 import styles from "./style.module.css";
 import { useThemeCtx } from "@/hooks/contexts";
+import UserAvatar from "../user/UserAvatar";
 
 const Topbar = () => {
   const user = useSessionStore.use.user();
@@ -33,7 +34,7 @@ const Topbar = () => {
   return (
     <div className={styles.topbar}>
       <div className={styles.topbarLeft}>
-        <span className="h4">Good Evening</span>
+        {/* <span className="h4">Good Evening</span> */}
       </div>
 
       <div className={styles.topbarRight}>
@@ -43,11 +44,11 @@ const Topbar = () => {
         <Dropdown closeOnSelect={false} placement="bottom-end">
           <DropdownTrigger>
             <Button isIconOnly radius="full">
-              <Avatar
+              <UserAvatar
                 showFallback
                 className="cursor-pointer transition-transform"
-                fallback={<Profile size="1.5em" variant="Bold" />}
-                src={user?.profile?.photo?.small}
+                src={user?.profile.photo.small}
+                bgColor={user?.profile.photo.extracted_color}
               />
             </Button>
           </DropdownTrigger>
@@ -55,7 +56,7 @@ const Topbar = () => {
             variant="faded"
             aria-label="User menu"
             onAction={(key) => {
-              if (key == "theme") toggleTheme();
+              if (key === "theme") toggleTheme();
             }}
           >
             <DropdownSection aria-label="base actions" showDivider>
@@ -77,7 +78,7 @@ const Topbar = () => {
                 endContent={
                   <Switch
                     aria-label="Switch theme"
-                    isSelected={theme == "dark"}
+                    isSelected={theme === "dark"}
                     classNames={{ wrapper: "mr-0" }}
                     size="sm"
                     color="primary"

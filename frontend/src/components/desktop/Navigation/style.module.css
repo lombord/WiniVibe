@@ -1,6 +1,6 @@
 .sidebar {
-  @apply flex-v-base no-scrollbar  h-full justify-between 
-  gap-4 overflow-y-auto p-4;
+  @apply flex-v-base no-scrollbar 
+  h-full justify-between gap-4 overflow-y-auto;
 }
 
 .sectionBlock {

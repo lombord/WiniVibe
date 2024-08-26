@@ -1,10 +1,12 @@
 import type {
+  CommonFieldProps,
+  EmptyFields,
   FieldError,
   Fields,
   FieldsData,
   FieldsError,
 } from "../Fields/types";
-import { FormBaseRef } from "../types";
+import type { FormBaseRef } from "../types";
 
 export type ChildSectionProps<
   F extends Fields = Fields,
@@ -15,14 +17,42 @@ export type SectionsMap = {
   [K in string]: ChildSectionProps;
 };
 
+export type EmptyNested<N extends SectionsMap | void = void> =
+  N extends SectionsMap
+    ? { [K in keyof N]: EmptySection<N[K]["fields"], N[K]["nested"]> } extends {
+        [K in keyof N]: true;
+      }
+      ? true
+      : false
+    : true;
+
+export type EmptySection<
+  F extends Fields | void = void,
+  N extends SectionsMap | void = void,
+> = F extends EmptyFields | void ? EmptyNested<N> : false;
+
 export type SectionData<
   F extends Fields | void = Fields,
   N extends SectionsMap | void = SectionsMap,
 > = (F extends Fields ? FieldsData<F> : {}) &
   (N extends SectionsMap ? SectionsData<N> : {});
 
-export type SectionsData<S extends SectionsMap = SectionsMap> = {
+export type BaseSectionsData<S extends SectionsMap = SectionsMap> = {
   [K in keyof S]: SectionData<S[K]["fields"], S[K]["nested"]>;
+};
+
+export type SectionsData<
+  S extends SectionsMap = SectionsMap,
+  SD extends BaseSectionsData<S> = BaseSectionsData<S>,
+  UK extends keyof S & keyof SD = keyof S & keyof SD,
+> = {
+  [K in UK as EmptySection<S[K]["fields"], S[K]["nested"]> extends true
+    ? never
+    : K]: SD[K];
+} & {
+  [K in UK as EmptySection<S[K]["fields"], S[K]["nested"]> extends true
+    ? K
+    : never]?: SD[K];
 };
 
 export type SectionValidator<T> = (value: T) => T | never;
@@ -34,6 +64,7 @@ export type SectionProps<
   sectionKey?: string;
   label?: string;
   showLabel?: boolean;
+  commonFieldProps?: CommonFieldProps;
   fields?: F;
   validator?: SectionValidator<SectionData<F, N>>;
   nested?: N;
@@ -71,6 +102,7 @@ export type SectionsProps<
   SD extends SectionsData<S> = SectionsData<S>,
 > = {
   sections: S;
+  inheritedProps?: Partial<SectionProps>;
   validator?: SectionValidator<SD>;
 };
 

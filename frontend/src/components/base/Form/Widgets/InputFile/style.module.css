@@ -1,0 +1,23 @@
+.dropBox {
+  --drop-color: theme("colors.primary");
+  @apply relative z-[1] text-center
+  rounded-xl border-2 border-dashed 
+  border-[var(--drop-color)] px-4 py-16;
+}
+
+.dropBox::before {
+  @apply absolute inset-0 -z-10 bg-[var(--drop-color)] 
+  opacity-10 content-[''];
+}
+
+.dropBox * {
+  @apply pointer-events-none;
+}
+
+.invalidBox {
+  --drop-color: theme("colors.danger");
+}
+
+.dropBoxOver {
+  --drop-color: theme("colors.success");
+}
